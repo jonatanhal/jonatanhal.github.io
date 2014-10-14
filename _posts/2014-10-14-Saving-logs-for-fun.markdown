@@ -3,15 +3,15 @@ layout: post
 title:  "Understanding & Saving Logs for Fun & Science"
 ---
 
-#Abstract
-The premise here is that you know a little bit about what [UFW][ufw], [dmesg][wiki-dmesg] & related technologies do. This post is intended for folks who might wanna try and mine or understand some of their logs.
+#How do i computer?
+The premise here is that you (the reader) know a little bit about what [UFW][ufw], [dmesg][wiki-dmesg] & related technologies do &/or are used for. This post is intended for folks who might wanna try and mine or understand some of their logs.
 Or just folks that might sit on data but not necessarily know what to do with it.
 
-Have you ever typed dmesg in your terminal of choice & scratched your head at what all these logs actually mean?  
+###Have you ever typed `dmesg` in your terminal of choice & scratched your head at what all these logs actually mean?  
 
 In my case, i had a similar train of thought when i installed [UFW][ufw] & made it my system firewall.
-I typed in dmesg, and saw a wall of logging, put there by UFW to let me know something about what it did.
-Now before we try to understand the logs [UFW][ufw] spits into the kernel ring-buffer, I would like to emphasize to correct me if I'm wrong, [tweet me][contact]
+I typed in dmesg, and saw walls of logging scrolling by, put there by UFW to let me know something about what it did.
+Now before we try to understand the logs that [UFW][ufw] spits into the kernel ring-buffer, I would like to emphasize to correct me if I'm wrong, [tweet me][contact].
 
 With that said, lets go.
 
