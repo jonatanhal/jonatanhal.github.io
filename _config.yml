@@ -1,6 +1,5 @@
 # Site settings
 title: Jonatanhal
-email: jonatanhal@gmail.com
 description: > # this means to ignore newlines until "baseurl:"
     Jonatanhal is alot of things.
 baseurl: "" # the subpath of your site, e.g. /blog/
