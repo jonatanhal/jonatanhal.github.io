@@ -4,8 +4,8 @@ title:  "Understanding & Saving Logs for Fun & Science"
 ---
 
 #Abstract
-The premise here is that you know a little bit about what [UFW][ufw], [dmesg][wiki-dmesg] & related technologies do. This post is intended for people who might wanna try and mine or understand different kinds of logs.
-Or simply people that might sit on data but not necessarily know what to do with it.
+The premise here is that you know a little bit about what [UFW][ufw], [dmesg][wiki-dmesg] & related technologies do. This post is intended for folks who might wanna try and mine or understand some of their logs.
+Or just folks that might sit on data but not necessarily know what to do with it.
 
 Have you ever typed dmesg in your terminal of choice & scratched your head at what all these logs actually mean?  
 
@@ -44,7 +44,7 @@ And if we leave out the `-T`-stamp when calling `dmesg` we would get the amount 
 
 If we take a look at the properties or anatomy of a TCP-packet we see that a lot of the information in our logs is referenced there, so the logs might not be as daunting as they might have appeared.
 
-![Anatomy of TCP-headers](assets/tcp-headers.jpg)  
+![Anatomy of TCP-headers]({{ site-url }}/assets/tcp-headers.jpg)  
 _Image courtesy of [frozentux][frozentux]_
 
 * * * 
