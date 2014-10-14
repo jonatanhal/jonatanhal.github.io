@@ -11,7 +11,7 @@ Have you ever typed dmesg in your terminal of choice & scratched your head at wh
 
 In my case, i had a similar train of thought when i installed [UFW][ufw] & made it my system firewall.
 I typed in dmesg, and saw a wall of logging, put there by UFW to let me know something about what it did.
-Now before we try to understand the logs [UFW][ufw] spits into the kernel ring buffer, I would like to emphasize to correct me if I'm wrong, [tweet me][contact]
+Now before we try to understand the logs [UFW][ufw] spits into the kernel ring-buffer, I would like to emphasize to correct me if I'm wrong, [tweet me][contact]
 
 With that said, lets go.
 
