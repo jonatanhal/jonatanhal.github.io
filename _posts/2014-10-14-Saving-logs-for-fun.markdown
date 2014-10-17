@@ -67,7 +67,7 @@ _Image courtesy of [frozentux][frozentux]_
 | `DPT=60979`         | **D**estination **p**or**t**, Port-number used by your machine to route traffic.					             |
 | `WINDOW=0`          | the number of bytes that the sender is willing to receive										             |
 | `RES=0x00`          | **Res**erved																					             |
-| `RST`               | **R**e**s**e**t** flag, other flags include 																 |
+| `RST`               | **R**e**s**e**t** flag, other flags include `ACK`, `SYN`, etc. 																 |
 | `URGP=0`            | **Urg**ent pointer, _if the URG flag is set, then this 16-bit field is an offset from the sequence number indicating the last urgent data byte_[^3] |
 |==========+===================|
 
