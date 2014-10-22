@@ -51,24 +51,24 @@ _Image courtesy of [frozentux][frozentux]_
 
 | Log-data            | Brief explanation |
 |+--------------------|+------------------|
-| `[$TIMESTAMP] [UFW BLOCK] `  | Date & action taken, in this case `BLOCK`                                                           |
-| `IN=wlp3s0`         | What interface received the packet                                                                           |
+| `[$TIMESTAMP] [UFW BLOCK] `  | Date & action taken, in this case `BLOCK`                                                               |
+| `IN=wlp3s0`         | What interface received the packet                                                                               |
 | `OUT=`              | What interface was gonna pass on the packet, in this case `OUT=` is empty because we don't NAT on our interfaces |
-| `MAC=[REDACTED]`    | contains the MAC-address of the interface the packet was addressed for, _redacted[^2] because privacy_.       |
-| `SRC=173.194.xxx.xxx` | the **s**ou**rc**e IP-address for the packet													             |
-| `DST=192.168.1.75`  | the **d**e**st**ination IP-address for the packet												             |
-| `LEN=40`            | the **len**gth of the packet																	             |
-| `TOS=0x00`          | **t**ype **o**f **s**ervice, can be used for packet-filtering									             |
-| `PREC=0x00`         | [Help me fill this out][contact]																			 |
-| `TTL=46`            | **T**ime **t**o **l**ive _AKA. hoplimit_, used in limiting the lifespan of a packet.                         |
-| `ID=27800`          | [Help me fill this out][contact]																			 |
-| `PROTO=TCP`         | Protocol, in this case TCP																		             |
-| `SPT=443`           | **S**ource **p**or**t**, Port-number that "hits" your machine									             |
-| `DPT=60979`         | **D**estination **p**or**t**, Port-number used by your machine to route traffic.					             |
-| `WINDOW=0`          | the number of bytes that the sender is willing to receive										             |
-| `RES=0x00`          | **Res**erved																					             |
-| `RST`               | **R**e**s**e**t** flag, other flags include `ACK`, `SYN`, etc. 																 |
-| `URGP=0`            | **Urg**ent pointer, _if the URG flag is set, then this 16-bit field is an offset from the sequence number indicating the last urgent data byte_[^3] |
+| `MAC=[REDACTED]`    | contains the MAC-address of the interface the packet was addressed for, _redacted[^2] because privacy_.          |
+| `SRC=173.194.xxx.xxx` | the source IP-address for the packet													                         |
+| `DST=192.168.1.75`  | the destination IP-address for the packet												                         |
+| `LEN=40`            | the length of the packet																	                     |
+| `TOS=0x00`          | type of service, can be used for packet-filtering									                             |
+| `PREC=0x00`         | [Help me fill this out][contact]																			     |
+| `TTL=46`            | Time to live _AKA. hoplimit_, used in limiting the lifespan of a packet.                                         |
+| `ID=27800`          | [Help me fill this out][contact]																			     |
+| `PROTO=TCP`         | Protocol, in this case TCP																		                 |
+| `SPT=443`           | Source port, Port-number that "hits" your machine									                             |
+| `DPT=60979`         | Destination port, Port-number used by your machine to route traffic.					                         |
+| `WINDOW=0`          | the number of bytes that the sender is willing to receive										                 |
+| `RES=0x00`          | Reserved																					                     |
+| `RST`               | Reset flag, other flags include `ACK`, `SYN`, etc. 																 |
+| `URGP=0`            | Urgent pointer, _if the URG flag is set, then this 16-bit field is an offset from the sequence number indicating the last urgent data byte_[^3] |
 |==========+===================|
 
 > ##DISCLAIMER
@@ -128,7 +128,7 @@ So what can we do with this data?
 + We can parse the data and shove it in a database[^4]
 + We could run some statistical analysis on the logs to find out things like what IP-address is most commonly blocked & what port-numbers are most commonly blocked & so on.
 + Generate nice graphs using our favorite programming-language.
-+ Run the data through [processing](http://processing.org) to do something cool. What are some of the similarities between [RGBA](https://en.wikipedia.org/wiki/RGBA_color_space) & IP-addresses?
++ Run the data through [processing](http://processing.org) to do something cool. For example, What are some of the similarities between [RGBA](https://en.wikipedia.org/wiki/RGBA_color_space) & IP-addresses? 
 
 I might do another part to this post, where i try to do just that, but for now I need to take a break from writing.
 

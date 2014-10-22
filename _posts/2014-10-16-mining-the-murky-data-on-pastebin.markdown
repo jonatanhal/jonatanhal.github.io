@@ -5,7 +5,7 @@ title:  "Mining the murky data on pastebin"
 
 # What is this, i dont even
 In this post we are going to basically construct a program together, or i will atleast try to tell you, the reader how I did it!
-A very brief `jonatanhal 101`, i started programming in Python3 around summer 2013, so I have at the time of writing this, a little more than a years experience of casual coding using Python3.
+A very brief `$ whoami`, i started programming in Python3 around summer 2013, so I have at the time of writing this, a little more than a years experience of casual coding using Python3.
 I have dabbled in C & [Processing](http://processing.org).
 
 So take this post for what it is. And if you think I'm factually wrong in any of my statements, you can [send me a tweet][contact] & I will try to correct that.
@@ -20,19 +20,20 @@ So if you are thinking about getting started with Golang, but you've only writte
 
 If I somehow sold you, lets get started.
 
+* * * 
+
 ##<del>Upload</del> Download all the things!
 You have probably heard about [pastebin][pbin], a place where data still roams free & snippets of exceptions, chatlogs
 and leaks come together to form the computing gene-pool of our time.
 
-We share our exceptions & bugs here, to get help from other people on the internet that share our interest in the turbo-pascal-IDE. Some people upload hacks or leaks on pastebin & others
-upload what appears to be nothing more than write-ups or .txt's about Pokémons-movesets, poems & everything inbetween.
+We share our exceptions & bugs there, to get help from, or show other people on the internet. Some people upload hacks or leaks on pastebin & others
+upload what appears to be nothing more than write-ups or .txt's about Pokémons-movesets, poems & everything inbetween. **So we download it all**
 
-![we need to crawl for more rims]({{ site-url }}/assets/stupid-rims.jpg)  
-_Analogy_
+![we need to crawl for more rims]({{ site-url }}/assets/stupid-rims.jpg)_Analogy_
 
-So our goal is to create a crawler that can download _things_ from pastebin, with concurrency & all sorts of flashy things that Go can enable us to implement.
+*Our goal is to create a crawler that can download all the latest things from pastebin, with concurrency & all sorts of flashy things that Go can enable us to implement.*
 
-#You cant spell programming without O & G.
+#You can't spell programming without 0x4f, 0x47.
 Wouldnt it be great if we were to make a concurrent crawler in [Go][golang] that fetches raw txt uploaded to pastebin & saves them for future experimentation? I know, right?
 The thing is that we can at the URL-level make requests to pastebin that lets us avoid parsing HTML alltogether.
 Just take a look at the [pastebin API][pbinapi]
@@ -42,49 +43,42 @@ Just take a look at the [pastebin API][pbinapi]
 >`http://pastebin.com/raw.php?i=`
 >Simply add the paste_key at the end of that URL and you will get the RAW output.
 
-_Yay! no html-parsing to just fetch a .txt!_
+**Yay! no html-parsing to just fetch a .txt!**
 
-### Except, well.. we still need to parse some html.
-The problem occurs right away & I realize that our crawler wont be able to get any actual __paste_key's__ without scraping some good ol' html.
+### Except, well..
+**We still need to parse some html.**
+The problem is, our crawler wont be able to get any actual _paste_key_'s without scraping some good ol' html. 
 At this point I looked if I could find any project similiar to [BeautifulSoup](http://www.crummy.com/software/BeautifulSoup/) (Python) where any and all parsing magic is
-vready for us to <del>ignore</del> dive into. `http`, along with `regexp` & pals from the standard go-library will make our program do what we want.
+ready for us to <del>ignore</del> dive into. `http`, along with `regexp` & pals from the [go standard library](http://golang.org/pkg/) will make our program do what we want.
 
 ### Maybe we dont need a parsing-library, _it's just some href's_
 
 We can take a look in how pastebin builds it's html which displays recent public pastes.
 {% highlight html %}
-<table class="maintable" cellspacing="0">
-
-    <tbody>
-        <tr class="top">
-            <th align="left" scope="col"></th>
-            <th align="left" scope="col"></th>
-            <th align="right" scope="col"></th>
-        </tr>
-        <tr>
-            <td>
-                <img class="i_p0" border="0" alt="" src="/i/t.gif"></img>
-                <a href="/DKhxef4N"></a> <!-- We want this href -->
-            </td>
-            <td></td>
-            <td align="right"></td>
-        </tr>
-	...
+<tr>
+    <td>
+        <img class="i_p0" border="0" alt="" src="/i/t.gif"></img>
+        <a href="/DKhxef4N"></a> <!-- We want the value of this href -->
+	</td>
+	<td></td>
+	<td align="right"></td>
+</tr>
 {% endhighlight %}
 
-These href's link to the pastes themselves, so thats the entrypoint for our crawler for now. And it should be pretty simple to parse these href's out of the .html, since we can use
-regex to find these little bastards.
+These href's link to the pastes themselves, so thats the entrypoint for our crawler for now. And it should be pretty simple to parse these href's out of the html, afterall, we can use
+regular expressions to find these little bastards!
 
-With the help of [GoRegex](http://goregex.com/) we are able to quickly throw together a regex that matches a selected sample.
+> I had a problem, so I decided to use regular expressions. Now i have two problems.
+
+With the help of [GoRegex](http://goregex.com/) along with [Duckduckgo's handy cheatsheet](https://duckduckgo.com/?q=regex), we are able to quickly throw together a regex that matches a selected sample.
 
 `<a href="/[a-zA-Z0-9]+">` or `<a href="/[a-zA-Z0-9]{8}">`, where `{8}` denotes that we are sure that we will only encounter an 8-character link. This matches against our example html straight from [pastebin][pbin],
 `<a href="/DKhxef4N">` where `DKhxef4N` is the previously mentioned `paste_key`. One possible pitfal with this quick-n-dirty solution is that we might end up catching links like `<a href="/trends">` and other href's found on pastebin.
 We can address this in our code later, where we skip those links. Allthough I'm sure that my haphazardly put together regex could be crafted to differenciate `/trends` from `/DKhxef4N`, I'm not much of a regex-ninja.
 But if you are & can help me out, [let me know][contact]
 
-# The Marriage of a Python & a Gopher
+# Gerbals & snakes live seperate lives.
 
-![gopher]({{ site-url }}/assets/project.png)  
 Lets get some code going, just to get our feet wet with Golang.
 Beginning our pastecrawler.go is some basic Golang structure where we define what package our code is a part of,
 what `import`s we use & our (for now) basic `main()`-function.
@@ -121,14 +115,15 @@ In a nutshell, the program will consist of a infinite loop inwhich we call the f
 
 + `produce()`  
   The purpose of `produce()` is for it to act like an producer for the function `download()`  
-  Using `go`-routines on a nested, anonymous function, which passes parsed pastekeys into a channel.
+  Using `go`-routines[^1] on a nested, anonymous function, which passes parsed pastekeys into a channel.
   `produce` parses out pastekeys using the functions `extract` & `contains`
 
   + `extract` takes string as parameter & applies some basic parsing on said string.  
   returns an empty string if no match was found.
 
-  + `contains` is just a function that iterates over a slice of strings and checks if a given string is in said slice.
-	Useful when we want to avoid href's such as "/about", "/contact" & so on.
+  + `contains` is just a function that iterates over a slice[^2] of strings and checks if a given string is in said slice.
+	Useful when we want to avoid href's that do not refer to pastes, such as `/about`, `/latest`
+
 
 + `download()`  
   
@@ -169,14 +164,6 @@ We use the `defer`-statement to keep a tidy ship, where the `defer`-statement is
 It's in other words, to make sure our connection (referenced by `resp`) in this case, is closed properly.
 
 We use the golang's nice type-converting in our return-statement. Where we take `body` of type `[]byte` (slife of bytes) & simply run it through `string()`.
-
-If you are coming from Python & scratching your head, saying "WTF are slices?" - Slices in go
-are similar to lists in python. In go, we also declare what kind of data is going into the slice.
-We cannot declare a slice of strings & insert or append data which match the declared type.
-
-in this case we declare it to be a slice of strings. 
-
-A list in python would be able to accept data of any type.
 
 ## produce()
 It would be a sin not to experiment with golang's excellent & easily implemented concurrency!
@@ -221,11 +208,11 @@ fmt.Println(match)
 
 It wont compile, since the variable `match` is undefined, limited to the scope of the `if`-statement.
 
-At this point we can basically call our two functions in `main()` & rejoice that our code does something slightly cooler than it did before.
-
 ## contains()
 
-We need to keep track of the URL's we have downloaded, we wouldn't want to download anything more times than whats needed.
+We need to keep track of the URL's we have downloaded, we wouldn't want to download anything more times than whats needed. 
+This can be achieved by appending the pastekeys to a blacklist as we download them.
+
 So we declare a slice of strings inwhich to put our blacklisted pastekeys. We also pass in some default values that we want to ignore.
 
 {% highlight go %}
@@ -267,6 +254,9 @@ Using our `contains` we can compare if a particular href have been visited or no
 
 
 * * *
+[^1]: Go test
+
+[^2]: Slices in go are similar to lists in python. However, in go, we also need to declare what kind of data is going into the slice. If we declare a slice with content of a certain type, we cannot insert or append data which doesn't match the type declared, into the slice. in this case we declare the variable `blacklist` to be a slice of strings. [_Go's definition_](http://blog.golang.org/go-slices-usage-and-internals)
 
 
 [pbin]:(http://pastebin.com)
