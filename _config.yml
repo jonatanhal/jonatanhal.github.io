@@ -6,7 +6,7 @@ description: > # this means to ignore newlines until "baseurl:"
     A blog about code, art, and whatever else i might fit in.
 baseurl:   	        /
 
-url: "https://jonatanhal.github.io" # the base hostname & protocol for your site
+url: 			"https://jonatanhal.github.io" # the base hostname & protocol for your site
 
 author:
         name:		'Jonatanhal'
@@ -16,12 +16,12 @@ twitter_username: 	jonatanhal
 github_username:	jonatanhal
 
 # Build settings
-markdown:		kramdown # redcarpet
+markdown:		kramdown
 highlighter: 		pygments
 
 permalinks:  		pretty
 relative_permalinks:	true
 
-paginate:		5
+paginate:		1
 
 

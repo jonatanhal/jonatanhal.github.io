@@ -1,20 +1,21 @@
 ---
 layout: post
-title:  "Mining the murky data on pastebin"
+title:  "Mining The Murky Data On Pastebin"
 ---
 
-# What is this, i dont even
-In this post we are going to basically construct a program together, or i will atleast try to tell you, the reader how I did it!
-A very brief `$ whoami`, i started programming in Python3 around summer 2013, so I have at the time of writing this, a little more than a years experience of casual coding using Python3.
+# What is this, I dont even
+In this post we are going to basically construct a program together, or I will atleast try to tell you, the reader how I did it!
+
+A very brief `$ whoami`, I started programming in Python3 around summer 2013, so I have at the time of writing this, a little more than a years experience of casual coding using Python3.
 I have dabbled in C & [Processing](http://processing.org).
 
 So take this post for what it is. And if you think I'm factually wrong in any of my statements, you can [send me a tweet][contact] & I will try to correct that.
 
-I recently bought the book [Programming in Go](http://www.amazon.com/Programming-Go-Creating-Applications-Developers/dp/0321774639/), and coming from a background in python I'm excited to start getting my hands dirty with
-programs like crawlers, which i enjoy writing & hacking on.
-
 > #TL;DR:
 > I will try to create a scraper using Golang. Coming from a background in Python3.
+
+I recently bought the book [Programming in Go](http://www.amazon.com/Programming-Go-Creating-Applications-Developers/dp/0321774639/), I'm excited to start getting my hands dirty with
+programs like crawlers, which i enjoy writing & hacking on.
 
 So if you are thinking about getting started with Golang, but you've only written code in Python or a similiar language before, we might be on a similiar level!
 
@@ -138,7 +139,7 @@ func getLatest() (string, error) {
 	// Make sure we close our response.
 	defer resp.Body.Close()
 
-	// Error-check
+  	// Error-check
 	if reqError != nil {
 		log.Fatal(reqError)
 		return nil, reqError
