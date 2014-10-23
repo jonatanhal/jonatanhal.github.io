@@ -3,7 +3,7 @@ layout: post
 title:  "Setting up encrypted ZFS on FreeBSD using GELI"
 ---
 
-# $ < post.md | grep why\?
+# $ < post.md | grep (why\?|what\?)
 When I first setup my FreeBSD NAS, I wanted to encrypt my data but still be able to
 take advantage of [what ZFS brings](https://en.wikipedia.org/wiki/ZFS#Features).
 Especially since my NAS has a couple of disks.
@@ -64,6 +64,11 @@ Command (? for help): w
 
 In our commands above, we simply create a single partition that encompasses the entire drive.
 **Repeat this step for every hard drive you want to build your encrypted pool with.**
+
+### Update regarding necessary kernel-modules
+The kernel-modules required for geli & zfs are not necessarily loaded by a default
+installation of FreeBSD, and we can make sure the modules we need are loaded by running the commands
+`kldload crypto` `kldload geom_eli` `kldload aesni`, as root.
 
 # A Key, A lock & GELI
 So in my case, I wanted to encrypt my array of disks using a key. Geli allows the use of a key
@@ -193,5 +198,14 @@ which reads the pass-phrase from std-in.
 assuming that our shell of choice frees the variable's place in memory.
 
 * * *
+
+**Updated on 2014-10-23** - [Keltounet](https://twitter.com/Keltounet) informed me that setting the option `copies=2`,
+actually doesn't help if hard-drives would fail. The answer to [this question on serverfault](http://serverfault.com/questions/377892/zfs-how-do-you-restore-the-correct-number-of-copies-after-losing-a-drive)
+explains it pretty well.
+
+Added a paragraph explaining how to load the relevant kernel-modules.
+
+* * *
+
 [^1]: Relevant information: [zfs man page](https://www.freebsd.org/cgi/man.cgi?query=zfs&apropos=0&sektion=0&manpath=FreeBSD+10.1-RELEASE&arch=default&format=html), [zpool manpange](https://www.freebsd.org/cgi/man.cgi?query=zpool&apropos=0&sektion=0&manpath=FreeBSD+10.1-RELEASE&arch=default&format=html), [Freebsd Handbook on disk-encryption, skip to 18.12.2 for information about geli](https://www.freebsd.org/doc/en/books/handbook/disks-encrypting.html)
 
