@@ -65,7 +65,7 @@ Command (? for help): w
 In our commands above, we simply create a single partition that encompasses the entire drive.
 **Repeat this step for every hard drive you want to build your encrypted pool with.**
 
-### Update regarding necessary kernel-modules
+### Loading necessary kernel-modules
 The kernel-modules required for geli & zfs are not necessarily loaded by a default
 installation of FreeBSD, and we can make sure the modules we need are loaded by running the commands
 `kldload crypto` `kldload geom_eli` `kldload aesni`, as root.
