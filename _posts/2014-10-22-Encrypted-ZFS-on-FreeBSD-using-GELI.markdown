@@ -104,10 +104,6 @@ you want :D**
 
 **When first setting up your ZFS raidz, remember to include all your prepared drives**
 
-In my case, I wanted some more data redundancy, just in case i get struck by lightning &
-two of my hard-drives die. I set the `copies`-option on my newly created pool,
-`$ zfs set copies=2 storage`.
-
 # Doing things by hand over & over sucks, let's make it EZ (but probably insecure).
 Modifying our *.zshrc*, we can implement some convenient functions that would make
 any cryptographer or paranoid person cringe & sub-tweet how horrible infosec-practice this is.
