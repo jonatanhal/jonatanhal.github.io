@@ -102,6 +102,9 @@ We can now rejoice & finally create our ZFS-pool in raidz & enjoy the other fanc
 ZFS.
 
 ## When my hard-drives die, my ticket to Frowntown will let me get out of there
+We can now fashion together our pool of drives, in my case i will create a raidz, which will
+make my array more resilient towards future drive-failures.
+
 With our newly fashioned, encrypted hard-drives we tell ZFS to do it's magic.
 `zpool create storage raidz ada1p1.eli ada2p1.eli ada3p1.eli`
 **Note that `storage` only is the chosen name of our pool, feel free to change this to whatever
@@ -146,7 +149,7 @@ instead of prompting the user for input.
 
 {% highlight sh %}
 function geliattach() {
-    $(sudo geli attach -k /usr/home/user/.keyfile -j ./.pfile /dev/$1 && echo $1) || "failed attaching";
+    (sudo geli attach -k /usr/home/user/.keyfile -j ./.pfile /dev/$1 && echo $1) || "failed attaching";
 }
 {% endhighlight %}
 
@@ -204,6 +207,10 @@ actually doesn't help if hard-drives would fail. The answer to [this question on
 explains it pretty well.
 
 Added a paragraph explaining how to load the relevant kernel-modules.
+
+**Updated on 2014-11-06** - Added a paragraph about creating the ZFS-array & corrected a
+mistake in the geliattach-function described above - The issue was a unnescessary `$` before
+the parenthesis.
 
 * * *
 
