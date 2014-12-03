@@ -60,14 +60,20 @@ html {
   background-color: #202020;
 }
 @media (min-width: 48em) {
-  .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 18rem;
-    text-align: left;
-  }
+    .sidebar {
+	white-space: nowrap;
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: 4rem;
+	text-align: left;
+	transition: width 0.5s;
+    }
+    .sidebar:hover {
+	width: 17rem;
+	transition: width 0.5s;
+    }
 }
 
 /* Sidebar links */
@@ -79,7 +85,7 @@ html {
 .sidebar-about h1 {
   color: #fff;
   margin-top: 0;
-  font-size: 2.3rem;
+  font-size: 2rem;
 }
 
 /* Sidebar nav */
