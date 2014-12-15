@@ -66,13 +66,8 @@ html {
 	top: 0;
 	left: 0;
 	bottom: 0;
-	width: 4rem;
-	text-align: left;
-	transition: width 0.5s;
-    }
-    .sidebar:hover {
 	width: 17rem;
-	transition: width 0.5s;
+	text-align: left;
     }
 }
 
