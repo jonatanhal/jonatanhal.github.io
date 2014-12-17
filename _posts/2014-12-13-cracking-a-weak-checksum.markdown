@@ -3,9 +3,9 @@ layout: post
 title:  "Cracking a weak checksum"
 ---
 # The internet is a great place, good people. Good times.
-I recently ran into a [challange](http://wiremask.eu/reverse-challenge-weak-checksum/)
+I recently ran into a [challenge](http://wiremask.eu/reverse-challenge-weak-checksum/)
 on the internet, and me being all new and naive about how hard it can be;
-I felt the need to atleast try to solve the challange. What could possibly go wrong?
+I felt the need to at least try to solve the challenge. What could possibly go wrong?
 
 I don't have any previous experience with doing crackme's, so we'll see how it goes.
 
@@ -68,7 +68,7 @@ esi-register and calling function referred to as `unk_402120`.
 It's nice and handy to be able to see the printf, and scanf being
 called, having a small amount of experience working with code that
 uses those functions (I have written & compiled a C-program once,
-so... yeah).  The exact meaning of the assembly is beyond my punative
+so... yeah).  The exact meaning of the assembly is beyond my punitive
 understanding of x86 assembly (or rather, assembly in general) but I
 think it's safe to say that execution of the pictured assembly-code
 goes something like this.
@@ -86,7 +86,7 @@ Using wine to run my free edition of IDA, I was able to run
 checksum-challenge.exe & *somehow* get a `Good Password` from the
 executable. However, this involved manually correcting a out-of-bounds 
 jump-instruction that were throwing an exception in IDA.  That
-along with my inherintly nonsensical approach, brought on by feelings
+along with my inherently nonsensical approach, brought on by feelings
 of frustration; makes me disqualify myself in this case, as I'm most likely
 not able to reproduce it.
 
@@ -134,7 +134,7 @@ While googling for what the `repne scasb` instruction is doing, I came across
 this wonderfully crafted explanation.
 
 >The x86 family of microprocessors come with with the scasb
->instruction which searches for the first occurence of a byte whose
+>instruction which searches for the first occurrence of a byte whose
 >value is equal to that of the AL register  
 >...  
 >When used along with
@@ -289,7 +289,7 @@ any sense though.
 Wierd.
 
 So with this hurdle in place, I can't really debug the file
-successfully anymore (thus greatly reducing my abilites to understand
+successfully anymore (thus greatly reducing my abilities to understand
 what's going on), since the execution is stopped by the exception.
 This makes me sad.
 
@@ -321,21 +321,21 @@ my (potential) reader.
 - - -
 
 # Lost in a lost world
-Bruteforcing the password would be *as simple* as randomly selecting
+Brute-forcing the password would be *as simple* as randomly selecting
 passwords & shoving them down the throat of the executable until we get a
 OK.
 
 That feels like cheating, so at this point I'm hopeful that there is a
 more natural way for me to interact with the executable, since my attempts at
-using IDA resulted in alot of headaches, but a small amount of success.
+using IDA resulted in a lot of headaches, but a small amount of success.
 
 ## So what did I learn?
 
 **Assembly is hard**, and I have a rough time wrapping my head around
 what's going where, who's doing who & how to computer. Using a debugger
-I am atleast able to visualise what's going on, but reading raw assembly;
+I am at least able to visualize what's going on, but reading raw assembly;
 
-Cudos to those who actually work with assembly & crack things, gods knows
+Kudos to those who actually work with assembly & crack things, gods knows
 I don't know how to.
 
 I might revisit this challenge some day, but for now, I feel like I've
@@ -347,11 +347,11 @@ correct, sometimes.
 
 - - -
 
-#Shoutouts
+#Shout-outs
 + [wiremask](http://wiremask.eu)
 + [G. Adam Stanislav's helpful piece on string-length](http://www.int80h.org/strlen/)
 + [Angolinux - 80386 Programmer's Reference Manual](http://www.fermimn.gov.it/linux/quarta/x86/)
-+ Trainwrecks
++ Train-wrecks
 + Failed projects
 
 #Footnotes
