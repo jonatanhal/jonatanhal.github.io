@@ -194,10 +194,15 @@ So the program is checking if the length of the input is longer than 4. Interest
 If we do enter some string longer than 4, the program jumps to another block, referenced
 as `loc_402070`, which *probably* is the actual checksum-algorithm.
 
+Here's the function as it's represented in IDA.
+![IDA view of loc_402070]({{site-url}}/assets/weak_checksum_ida002.png)
+
+Let's insert some comments & try get a grasp on what's going on.
+
 {% highlight nasm %}
 loc_402070:
 xor     ebx, ebx                     ; clear ebx
-mov     esi, offset unk_401047       ; move the string into esi
+mov     esi, offset unk_401047       ; move the input into esi
 mov     ecx, dword_40103B            ; ???
 shr     ecx, 2                       ; shift bits in ecx to the right by 2
 call    sub_40210D                   ; sub_40210D, eax becomes ???
@@ -214,19 +219,20 @@ mov     ebp, esp  ; move stack-pointers value into the base-pointer
 push    esi       ; push the contents of esi onto the stack
 xor     eax, eax  ; clear eax
 cld               ; clear direction-flag
-
-loc_402114:
-; lodsd basically loads 4 characters of the string into ebx
-; at the same time, incrementing esi to point at the following
-; 4 bytes of the input.
-lodsd
-; In the first iteration, eax is 0
-add     ebx, eax
-; rotate the bits of the 4 bytes to the left by 1
-rol     ebx, 1
-; If esi is pointing to a value of 0, meaning that the full
-; string has been read, the loop breaks.
-loop    loc_402114  ; loop back to loc_402114
+	
+	; indented for readability.
+	loc_402114: 
+	; lodsd basically loads 4 characters of the string into ebx
+	; at the same time, incrementing esi to point at the following
+	; 4 bytes of the input.
+	lodsd
+	; In the first iteration, eax is 0
+	add     ebx, eax
+	; rotate the bits of the 4 bytes to the left by 1
+	rol     ebx, 1
+	; If esi is pointing to a value of 0, meaning that the full
+	; string has been read, the loop breaks.
+	loop    loc_402114  ; loop back to loc_402114
 
 ; When the loop breaks, ebx contains the mangled input
 mov     eax, ebx  ; move value of ebx into eax
@@ -253,51 +259,64 @@ mov     dword_40103F, eax            ; move ??? into
 mov     eax, dword_40103F            ; move ??? into eax
 mov     ebx, dword_401037            ; ebx is changed in sub_40210D
 xor     eax, ebx                     ; xor eax & ebx
-; The following instruction throws an exception in IDA, since it basically
-; tries to make eax reference memory that is not available, WTF?
-mov     dword ptr [eax], 0C3C9C031h  ; move a 32bit cast of 0xc3c9c0c31 -> eax
-pop     large dword ptr fs:0         ; ??? *
 ; ...
 {% endhighlight %}
-*[Something, something Windows](https://en.wikipedia.org/wiki/Win32_Thread_Information_Block)
 
-Is this some sort of anti-debugging thing? Or is it an old ghost-bug
-that haunts my somewhat dated version of IDA?
-
-This confuses me, it's not like the program crashes when it's ran
-normally.  This made me believe that there was something wrong with
-how i opened the file in IDA, and if i just opened the file correctly,
-IDA would generate assembly that would make more sense.  Not sure if
-that in itself makes any sense though.
-
-Wierd.
-
-So I cant really debug the file successfully anymore, since the
-execution is stopped because of the exception. This makes me sad.  
-But I do however have the assembly in front of me, so I can try just
-wrap my head around WTF is going on, without IDA's niceties.
-
-*Or is there a way?*
-
-
-
-
+Code above 
 
 {% highlight nasm %}
 ; Continued loc_402070
-add     esp, 24h                     ; add 0x24 to stack-pointer
+; The following instruction throws an exception in IDA, since it basically
+; tries to make eax reference memory that is not available, WTF?
+
+mov     dword ptr [eax], 0C3C9C031h
+; ??? *
+pop     large dword ptr fs:0
+; add 0x24 to the stack-pointer
+add     esp, 24h
+; ...
+{% endhighlight %}
+**Windows-specific thing, not sure.* [^1]
+
+**Is this some sort of anti-debugging thing?**
+
+It's not like the program crashes when it's ran normally. This made me
+believe that there was something wrong with how i opened the file in
+IDA, and if i just opened the file correctly, IDA would generate
+assembly that would make more sense.  Not sure if that in itself makes
+any sense though.
+
+Wierd.
+
+So with this hurdle in place, I can't really debug the file
+successfully anymore (thus greatly reducing my abilites to understand
+what's going on), since the execution is stopped by the exception.
+This makes me sad.
+
+But I do however have the assembly in front of me, so I can try just
+wrap my head around WTF is going on, without IDA's niceties.
+
+{% highlight nasm %}
+; Continued loc_402070
 push    eax                          ; push eax onto the stack
 rol     ebx, 4                       ; rotate ebx to the left by 4
 shl     ebx, 1                       ; shift ebx to the left by 1
 mov     eax, ebx                     ; move ebx into eax
-mov     edi, offset unk_401057       ; move ??? into edi
+mov     edi, offset unk_401057       ; move what's in unk_401057 into edi
 mov     ecx, 4                       ; move 4 into ecx
 cld                                  ; clear direction-flag
-rep stosd                            ; http://www.fermimn.gov.it/linux/quarta/x86/rep.htm
+rep stosd
+
 sub     edi, 10h                     ; subtract 10 from edi
-xor     dword ptr [edi], 1C1E6AD9h   ; xor edi & 0x1c1e6ad9
-xor     dword ptr [edi+4], 0B1075BEh ; xor (edi + 4) & 0x0b1075be
+xor     dword ptr [edi], 1C1E6AD9h   ; xor 4 bytes of edi's pointer & 0x1c1e6ad9
+xor     dword ptr [edi+4], 0B1075BEh ; xor 4 bytes of (edi + 4)'s pointer & 0xb1075be
 {% endhighlight %}
+
+I would try and explain what I think is going on with the code above,
+but I think the only thing I would succeed with is confusing myself &
+my (potential) reader.
+
+*Queue the fail trombone-thing*
 
 - - -
 
@@ -310,6 +329,21 @@ That feels like cheating, so at this point I'm hopeful that there is a
 more natural way for me to interact with the executable, since my attempts at
 using IDA resulted in alot of headaches, but a small amount of success.
 
+## So what did I learn?
+
+**Assembly is hard**, and I have a rough time wrapping my head around
+what's going where, who's doing who & how to computer. Using a debugger
+I am atleast able to visualise what's going on, but reading raw assembly;
+
+Cudos to those who actually work with assembly & crack things, gods knows
+I don't know how to.
+
+I might revisit this challenge some day, but for now, I feel like I've
+hit a brick wall. This was brought on not only by the brakes to my debugging
+but also to my grave lack of understanding in regards to assembly,
+debugging made it somewhat more easy to understand & occasionally go
+"I predict that thing X will do Y to thing Z", and actually be somewhat
+correct, sometimes.
 
 - - -
 
@@ -317,8 +351,11 @@ using IDA resulted in alot of headaches, but a small amount of success.
 + [wiremask](http://wiremask.eu)
 + [G. Adam Stanislav's helpful piece on string-length](http://www.int80h.org/strlen/)
 + [Angolinux - 80386 Programmer's Reference Manual](http://www.fermimn.gov.it/linux/quarta/x86/)
++ Trainwrecks
++ Failed projects
 
-
-
+#Footnotes
+[^1]: [Information regarding the fs:0 instruction](https://en.wikipedia.org/wiki/Win32_Thread_Information_Block)
+[^2]: [Regarding the REP-instructions](http://www.fermimn.gov.it/linux/quarta/x86/rep.htm)
 
 
