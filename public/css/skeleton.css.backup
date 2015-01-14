@@ -7,6 +7,16 @@
 * 12/15/2014
 */
 
+/* Changes by github.com/jonatanhal - 12/21/2014
+*
+* body - color (was #222)
+* .button.button-primary - background-& border-color (was #33c3f0)
+* .button.button-primary - background:hover (was #1EAEDB)
+* code - overwritten in custom.css
+* hr - border-top (was 1px solid #e1e1e1;)
+* blockquote - (was margin-bottom: 2.5rem;)
+* Font
+*/
 
 /* Table of contents
 –––––––––––––––––––––––––––––––––––––––––––––––––– 
@@ -119,21 +129,20 @@
 html is set to 62.5% so that all the REM measurements throughout Skeleton 
 are based on 10px sizing. So basically 1.5rem = 15px :) */
 html { 
-  font-size: 62.5%; } 
+    font-size: 62.5%; } 
 body {
-  font-size: 1.5em; /* currently ems cause chrome bug misinterpreting rems on body element */
-  line-height: 1.6;
-  font-weight: 400;
-  font-family: "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color: #222; }
-
+    font-size: 1.7em; /* currently ems cause chrome bug misinterpreting rems on body element */
+    line-height: 1.6;
+    font-weight: 400;
+    font-family: "Ubuntu", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #222; }
 
 /* Typography
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 h1, h2, h3, h4, h5, h6 { 
   margin-top: 0;
   margin-bottom: 2rem;
-  font-weight: 300; }
+  font-weight: 700; }
 h1 { font-size: 4.0rem; line-height: 1.2;  letter-spacing: -.1rem;}
 h2 { font-size: 3.6rem; line-height: 1.25; letter-spacing: -.1rem; }
 h3 { font-size: 3.0rem; line-height: 1.3;  letter-spacing: -.1rem; }
@@ -152,15 +161,15 @@ h6 { font-size: 1.5rem; line-height: 1.6;  letter-spacing: 0; }
 }
 
 p {
-  margin-top: 0; }
+    margin-top: 0; }
 
 
 /* Links
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 a { 
-  color: #1EAEDB; }
+  color: #222; }
 a:hover { 
-  color: #0FA0CE; }
+  color: #333; }
 
 
 /* Buttons 
@@ -206,8 +215,8 @@ input[type="submit"].button-primary,
 input[type="reset"].button-primary,
 input[type="button"].button-primary {
   color: #FFF;
-  background-color: #33C3F0;
-  border-color: #33C3F0; }
+  background-color: #333;
+  border-color: #333; }
 .button.button-primary:hover,
 button.button-primary:hover,
 input[type="submit"].button-primary:hover,
@@ -219,8 +228,8 @@ input[type="submit"].button-primary:focus,
 input[type="reset"].button-primary:focus,
 input[type="button"].button-primary:focus {
   color: #FFF;
-  background-color: #1EAEDB;
-  border-color: #1EAEDB; }
+  background-color: #170207;
+  border-color: #170207; }
 
 
 /* Forms
@@ -304,19 +313,19 @@ li {
 
 /* Code
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-code {
+/*code {
   padding: .2rem .5rem;
   margin: 0 .2rem;
   font-size: 90%;
   white-space: nowrap;
-  background: #F1F1F1;
-  border: 1px solid #E1E1E1;
+  background: #333;
+  border: 1px solid #333;
   border-radius: 4px; }
 pre > code {
   display: block;
   padding: 1rem 1.5rem;
   white-space: pre; }
-
+*/
 
 /* Tables
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
@@ -342,7 +351,7 @@ input,
 textarea,
 select,
 fieldset {
-  margin-bottom: 1.5rem; }
+  margin-bottom: 1rem; }
 pre,
 blockquote,
 form,
@@ -353,7 +362,7 @@ p,
 ul,
 ol,
 form {
-  margin-bottom: 2.5rem; }
+  margin-bottom: 1rem; }
 p {
   margin-top: 0; }
 
@@ -378,7 +387,7 @@ hr {
   margin-top: 3rem;
   margin-bottom: 3.5rem;
   border-width: 0;
-  border-top: 1px solid #E1E1E1;
+  border-top: 3px solid #222;
 }
 
 /* Clearing
