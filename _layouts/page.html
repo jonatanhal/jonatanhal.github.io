@@ -2,7 +2,13 @@
 layout: default
 ---
 
-<div class="page">
-  <h1 class="page-title">{{ page.title }}</h1>
-  {{ content }}
+<div class="row">
+  <div class="u-pull-left">
+    <h2 class="post-title">{{ page.title }}</h2>
+  </div>
+</div>
+<div class="row">
+  <div class="twelve columns">
+    {{ content }}
+  </div>
 </div>

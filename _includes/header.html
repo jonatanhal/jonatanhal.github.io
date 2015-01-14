@@ -1,0 +1,18 @@
+<div class="row" style="margin-top: 2%;">
+  <div class="u-pull-left">
+    <h1>{{ site.title }}</h1>
+    <h4>{{ site.description }}</h4>
+  </div>
+  <div class="u-pull-right">
+    <ul>
+      {% for page in site.pages %}
+      {% if page.url != '/404.html' and page.title != null %}
+      <li>
+	<a href="{{ page.url }}">{{ page.title }}</a>
+      </li>
+      {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+<hr></hr>

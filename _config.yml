@@ -2,17 +2,10 @@
 title:			Jonatanhal
 tagline:		'$PUNCHLINE'
 
-description: 		"☃"
+description: 		"Ramblings from a developer"
 baseurl:   	        /
 
 url: 			"https://jonatanhal.github.io" # the base hostname & protocol for your site
-
-author:
-        name:		'Jonatanhal'
-        url:		'https://twitter.com/jonatanhal'
-
-twitter_username: 	jonatanhal
-github_username:	jonatanhal
 
 # Build settings
 markdown:		kramdown
@@ -21,6 +14,6 @@ highlighter: 		pygments
 permalinks:  		pretty
 relative_permalinks:	true
 
-paginate:		1
+paginate:		5
 
 

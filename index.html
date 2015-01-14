@@ -2,36 +2,40 @@
 layout: default
 title: Home
 ---
-
-<div class="posts">
-  {% for post in paginator.posts %}
-  <div class="post">
-    <h1 class="post-title">
-      <a href="{{ post.url }}">
-        {{ post.title }}
-      </a>
-    </h1>
-
-    <span class="post-date">{{ post.date | date_to_string }}</span>
-
-    {{ post.content }}
+{% for post in paginator.posts %}
+<div class="row">
+  <div class="u-pull-left">
+    <h4><a href="{{ post.url }}">{{ post.title }}</a></h1>
   </div>
-  {% endfor %}
+  <div class="u-pull-right">
+    <h5>{{ post.date | date_to_string }}</h5>
+  </div>
 </div>
+{% endfor %}
 
-<div class="pagination">
-  {% if paginator.next_page %}
-    <a class="pagination-item older" href="{{ site.baseurl }}page{{paginator.next_page}}">Older</a>
-  {% else %}
-    <span class="pagination-item older">Older</span>
-  {% endif %}
-  {% if paginator.previous_page %}
-    {% if paginator.page == 2 %}
-      <a class="pagination-item newer" href="{{ site.baseurl }}">Newer</a>
+<div class="row">
+  <div class="twelve columns">
+    <hr class="spacer"></hr>
+  </div>
+
+  <div class="u-pull-left">
+    {% if paginator.next_page %}
+    <a class="button" href="{{ site.baseurl }}page{{paginator.next_page}}">Older</a>
     {% else %}
-      <a class="pagination-item newer" href="{{ site.baseurl }}page{{paginator.previous_page}}">Newer</a>
+    <button class="button">Older</button>
     {% endif %}
-  {% else %}
-    <span class="pagination-item newer">Newer</span>
-  {% endif %}
+  </div>
+
+  <div class="u-pull-right">
+    {% if paginator.previous_page %}
+    {% if paginator.page == 2 %}
+    <a class="button" href="{{ site.baseurl }}">Newer</a>
+    {% else %}
+    <a class="button" href="{{ site.baseurl }}page{{paginator.previous_page}}">Newer</a>
+    {% endif %}
+    {% else %}
+    <button>Newer</button>
+    {% endif %}
+
+  </div>
 </div>
