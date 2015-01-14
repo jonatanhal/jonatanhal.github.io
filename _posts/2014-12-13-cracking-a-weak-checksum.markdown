@@ -2,11 +2,16 @@
 layout: post
 title:  "Cracking a weak checksum"
 ---
+<<<<<<< HEAD
 **The internet is a great place, good people. Good times.**
 
 I recently ran into a [challange](http://wiremask.eu/reverse-challenge-weak-checksum/)
+=======
+# The internet is a great place, good people. Good times.
+I recently ran into a [challenge](http://wiremask.eu/reverse-challenge-weak-checksum/)
+>>>>>>> master
 on the internet, and me being all new and naive about how hard it can be;
-I felt the need to atleast try to solve the challange. What could possibly go wrong?
+I felt the need to at least try to solve the challenge. What could possibly go wrong?
 
 I don't have any previous experience with doing crackme's, so we'll see how it goes.
 
@@ -69,7 +74,7 @@ esi-register and calling function referred to as `unk_402120`.
 It's nice and handy to be able to see the printf, and scanf being
 called, having a small amount of experience working with code that
 uses those functions (I have written & compiled a C-program once,
-so... yeah).  The exact meaning of the assembly is beyond my punative
+so... yeah).  The exact meaning of the assembly is beyond my punitive
 understanding of x86 assembly (or rather, assembly in general) but I
 think it's safe to say that execution of the pictured assembly-code
 goes something like this.
@@ -87,7 +92,7 @@ Using wine to run my free edition of IDA, I was able to run
 checksum-challenge.exe & *somehow* get a `Good Password` from the
 executable. However, this involved manually correcting a out-of-bounds 
 jump-instruction that were throwing an exception in IDA.  That
-along with my inherintly nonsensical approach, brought on by feelings
+along with my inherently nonsensical approach, brought on by feelings
 of frustration; makes me disqualify myself in this case, as I'm most likely
 not able to reproduce it.
 
@@ -135,7 +140,7 @@ While googling for what the `repne scasb` instruction is doing, I came across
 this wonderfully crafted explanation.
 
 >The x86 family of microprocessors come with with the scasb
->instruction which searches for the first occurence of a byte whose
+>instruction which searches for the first occurrence of a byte whose
 >value is equal to that of the AL register  
 >...  
 >When used along with
@@ -195,10 +200,15 @@ So the program is checking if the length of the input is longer than 4. Interest
 If we do enter some string longer than 4, the program jumps to another block, referenced
 as `loc_402070`, which *probably* is the actual checksum-algorithm.
 
+Here's the function as it's represented in IDA.
+![IDA view of loc_402070]({{site-url}}/assets/weak_checksum_ida002.png)
+
+Let's insert some comments & try get a grasp on what's going on.
+
 {% highlight nasm %}
 loc_402070:
 xor     ebx, ebx                     ; clear ebx
-mov     esi, offset unk_401047       ; move the string into esi
+mov     esi, offset unk_401047       ; move the input into esi
 mov     ecx, dword_40103B            ; ???
 shr     ecx, 2                       ; shift bits in ecx to the right by 2
 call    sub_40210D                   ; sub_40210D, eax becomes ???
@@ -215,19 +225,20 @@ mov     ebp, esp  ; move stack-pointers value into the base-pointer
 push    esi       ; push the contents of esi onto the stack
 xor     eax, eax  ; clear eax
 cld               ; clear direction-flag
-
-loc_402114:
-; lodsd basically loads 4 characters of the string into ebx
-; at the same time, incrementing esi to point at the following
-; 4 bytes of the input.
-lodsd
-; In the first iteration, eax is 0
-add     ebx, eax
-; rotate the bits of the 4 bytes to the left by 1
-rol     ebx, 1
-; If esi is pointing to a value of 0, meaning that the full
-; string has been read, the loop breaks.
-loop    loc_402114  ; loop back to loc_402114
+	
+	; indented for readability.
+	loc_402114: 
+	; lodsd basically loads 4 characters of the string into ebx
+	; at the same time, incrementing esi to point at the following
+	; 4 bytes of the input.
+	lodsd
+	; In the first iteration, eax is 0
+	add     ebx, eax
+	; rotate the bits of the 4 bytes to the left by 1
+	rol     ebx, 1
+	; If esi is pointing to a value of 0, meaning that the full
+	; string has been read, the loop breaks.
+	loop    loc_402114  ; loop back to loc_402114
 
 ; When the loop breaks, ebx contains the mangled input
 mov     eax, ebx  ; move value of ebx into eax
@@ -254,72 +265,103 @@ mov     dword_40103F, eax            ; move ??? into
 mov     eax, dword_40103F            ; move ??? into eax
 mov     ebx, dword_401037            ; ebx is changed in sub_40210D
 xor     eax, ebx                     ; xor eax & ebx
-; The following instruction throws an exception in IDA, since it basically
-; tries to make eax reference memory that is not available, WTF?
-mov     dword ptr [eax], 0C3C9C031h  ; move a 32bit cast of 0xc3c9c0c31 -> eax
-pop     large dword ptr fs:0         ; ??? *
 ; ...
 {% endhighlight %}
-*[Something, something Windows](https://en.wikipedia.org/wiki/Win32_Thread_Information_Block)
 
-Is this some sort of anti-debugging thing? Or is it an old ghost-bug
-that haunts my somewhat dated version of IDA?
-
-This confuses me, it's not like the program crashes when it's ran
-normally.  This made me believe that there was something wrong with
-how i opened the file in IDA, and if i just opened the file correctly,
-IDA would generate assembly that would make more sense.  Not sure if
-that in itself makes any sense though.
-
-Wierd.
-
-So I cant really debug the file successfully anymore, since the
-execution is stopped because of the exception. This makes me sad.  
-But I do however have the assembly in front of me, so I can try just
-wrap my head around WTF is going on, without IDA's niceties.
-
-*Or is there a way?*
-
-
-
-
+Code above 
 
 {% highlight nasm %}
 ; Continued loc_402070
-add     esp, 24h                     ; add 0x24 to stack-pointer
+; The following instruction throws an exception in IDA, since it basically
+; tries to make eax reference memory that is not available, WTF?
+
+mov     dword ptr [eax], 0C3C9C031h
+; ??? *
+pop     large dword ptr fs:0
+; add 0x24 to the stack-pointer
+add     esp, 24h
+; ...
+{% endhighlight %}
+**Windows-specific thing, not sure.* [^1]
+
+**Is this some sort of anti-debugging thing?**
+
+It's not like the program crashes when it's ran normally. This made me
+believe that there was something wrong with how i opened the file in
+IDA, and if i just opened the file correctly, IDA would generate
+assembly that would make more sense.  Not sure if that in itself makes
+any sense though.
+
+Wierd.
+
+So with this hurdle in place, I can't really debug the file
+successfully anymore (thus greatly reducing my abilities to understand
+what's going on), since the execution is stopped by the exception.
+This makes me sad.
+
+But I do however have the assembly in front of me, so I can try just
+wrap my head around WTF is going on, without IDA's niceties.
+
+{% highlight nasm %}
+; Continued loc_402070
 push    eax                          ; push eax onto the stack
 rol     ebx, 4                       ; rotate ebx to the left by 4
 shl     ebx, 1                       ; shift ebx to the left by 1
 mov     eax, ebx                     ; move ebx into eax
-mov     edi, offset unk_401057       ; move ??? into edi
+mov     edi, offset unk_401057       ; move what's in unk_401057 into edi
 mov     ecx, 4                       ; move 4 into ecx
 cld                                  ; clear direction-flag
-rep stosd                            ; http://www.fermimn.gov.it/linux/quarta/x86/rep.htm
+rep stosd
+
 sub     edi, 10h                     ; subtract 10 from edi
-xor     dword ptr [edi], 1C1E6AD9h   ; xor edi & 0x1c1e6ad9
-xor     dword ptr [edi+4], 0B1075BEh ; xor (edi + 4) & 0x0b1075be
+xor     dword ptr [edi], 1C1E6AD9h   ; xor 4 bytes of edi's pointer & 0x1c1e6ad9
+xor     dword ptr [edi+4], 0B1075BEh ; xor 4 bytes of (edi + 4)'s pointer & 0xb1075be
 {% endhighlight %}
+
+I would try and explain what I think is going on with the code above,
+but I think the only thing I would succeed with is confusing myself &
+my (potential) reader.
+
+*Queue the fail trombone-thing*
 
 - - -
 
 # Lost in a lost world
-Bruteforcing the password would be *as simple* as randomly selecting
+Brute-forcing the password would be *as simple* as randomly selecting
 passwords & shoving them down the throat of the executable until we get a
 OK.
 
 That feels like cheating, so at this point I'm hopeful that there is a
 more natural way for me to interact with the executable, since my attempts at
-using IDA resulted in alot of headaches, but a small amount of success.
+using IDA resulted in a lot of headaches, but a small amount of success.
 
+## So what did I learn?
+
+**Assembly is hard**, and I have a rough time wrapping my head around
+what's going where, who's doing who & how to computer. Using a debugger
+I am at least able to visualize what's going on, but reading raw assembly;
+
+Kudos to those who actually work with assembly & crack things, gods knows
+I don't know how to.
+
+I might revisit this challenge some day, but for now, I feel like I've
+hit a brick wall. This was brought on not only by the brakes to my debugging
+but also to my grave lack of understanding in regards to assembly,
+debugging made it somewhat more easy to understand & occasionally go
+"I predict that thing X will do Y to thing Z", and actually be somewhat
+correct, sometimes.
 
 - - -
 
-#Shoutouts
+#Shout-outs
 + [wiremask](http://wiremask.eu)
 + [G. Adam Stanislav's helpful piece on string-length](http://www.int80h.org/strlen/)
 + [Angolinux - 80386 Programmer's Reference Manual](http://www.fermimn.gov.it/linux/quarta/x86/)
++ Train-wrecks
++ Failed projects
 
-
-
+#Footnotes
+[^1]: [Information regarding the fs:0 instruction](https://en.wikipedia.org/wiki/Win32_Thread_Information_Block)
+[^2]: [Regarding the REP-instructions](http://www.fermimn.gov.it/linux/quarta/x86/rep.htm)
 
 
