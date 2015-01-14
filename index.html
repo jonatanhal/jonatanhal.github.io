@@ -4,11 +4,11 @@ title: Home
 ---
 {% for post in paginator.posts %}
 <div class="row">
-  <div class="seven columns">
-    <h4><a href="{{ post.url }}">{{ post.title }}</a></h1>
+  <div class="u-pull-left">
+    <h4><a href="{{ post.url }}">{{ post.title }}</a></h4>
   </div>
   <div class="u-pull-right">
-    <h5>{{ post.date | date_to_string }}</h5>
+    <label>{{ post.date | date_to_string }}</label>
   </div>
 </div>
 {% endfor %}
