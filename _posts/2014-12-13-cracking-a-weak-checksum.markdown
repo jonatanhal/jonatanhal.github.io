@@ -2,14 +2,9 @@
 layout: post
 title:  "Cracking a weak checksum"
 ---
-<<<<<<< HEAD
 **The internet is a great place, good people. Good times.**
 
 I recently ran into a [challange](http://wiremask.eu/reverse-challenge-weak-checksum/)
-=======
-# The internet is a great place, good people. Good times.
-I recently ran into a [challenge](http://wiremask.eu/reverse-challenge-weak-checksum/)
->>>>>>> master
 on the internet, and me being all new and naive about how hard it can be;
 I felt the need to at least try to solve the challenge. What could possibly go wrong?
 
