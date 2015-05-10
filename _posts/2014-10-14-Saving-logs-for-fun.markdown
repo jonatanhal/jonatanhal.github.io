@@ -43,7 +43,7 @@ And if we leave out the `-T`-stamp when calling `dmesg` we would get the amount 
 
 If we take a look at the properties or anatomy of a TCP-packet we see that a lot of the information in our logs is referenced there, so the logs might not be as daunting as they might have appeared.
 
-![Anatomy of TCP-headers]({{ site-url }}/assets/tcp-headers.jpg)  
+![Anatomy of TCP-headers]({{ site-url }}/assets/post_images/tcp-headers.jpg)  
 _Image courtesy of [frozentux][frozentux]_
 
 * * * 

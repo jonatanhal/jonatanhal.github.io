@@ -185,7 +185,7 @@ looking for the flag.
 Using <s>my F12-exploit</s> developer-tools again in Firefox
 , I can click my way to the network-tab & with `levelfour.php`
 selected, inspect the cookies associated with the request.
-![Challenge 4 developer-tools cookie inspection]({{ site-url }}/assets/infosec_ctf_ch04_cookies.jpg)
+![Challenge 4 developer-tools cookie inspection]({{ site-url }}/assets/post_images/infosec_ctf_ch04_cookies.jpg)
 
 Ohai cookie.
 
