@@ -2,15 +2,15 @@
 layout: post
 title:  "Capturing infosec-flags"
 ---
-#Overview
-I tried to solve some of the Capture-the-flag challenges over at ctf.infosecinstitute.com
-Here's just me typing down things as i go through the challenges.
 
-#Challenge 1
-I started writing this post after made *some* "progress" on the challenge.
-![Challenge 1 screen]({{ site-url }}/assets/infosec_ctf_ch01.jpg)
+I tried to solve some of the Capture-the-flag challenges over at
+ctf.infosecinstitute.com Here's just me typing down things as i go
+through the challenges. The format is simple, each challenge is a seperate HTML
+page, often with an image & some piece of text that together act as a clue to what's going on.
 
-A picture of Yoda & the text "May the source be with you!", great!
+###Challenge 1
+
+We're greeted by a picture of Yoda & the text "May the source be with you!", great!
 So, I started by looking at the source of the HTML, looking for any
 script or weird HTML give me some clues on the challenge. There's nothing
 in the HTML or JavaScript that does anything out of the ordinary, so after
@@ -25,15 +25,14 @@ Staring at me, in it's humble representation, was what I believe to be the first
 
 `<!-- infosec_flagis_welcome -->`
 
-### Conclusion, Challenge 1:
+#### Conclusion, Challenge 1:
 + Flag: welcome
 + Difficulty: Eyes
 
 * * *
 
-#Challenge 2
+###Challenge 2
 Here we go, Challenge 2, I'm excited :D
-![Challenge 2 screen]({{ site-url }}/assets/infosec_ctf_ch02.jpg)
 
 OK, text is `< It seems like the image is broken..Can you check the File? >`,
 located above it is a broken `img`-tag. Sounds reasonable, let's take a look.
@@ -137,15 +136,13 @@ Boom goes the dynamite.
 the browser, however I am more familiar with using Python so,
 that's what i felt comfortable using.* 
 
-###Conclusion, challenge 2.
+####Conclusion, challenge 2.
 + Flag: wearejuststarting
 + Difficulty: Computer
 
 * * *
 
-#Challenge 3.
-
-![Challenge 3 screen]({{ site-url }}/assets/infosec_ctf_ch03.jpg)
+###Challenge 3.
 
 We are presented with a Qr-code & progress-bar, stuck at 90%.
 
@@ -163,15 +160,13 @@ Turning the Morse-code into their letter-counterpart produces this:
 
 `I N F O S E C F L A G I S M O R S I N G`
 
-###Conclusion, Challenge 3.
+####Conclusion, Challenge 3.
 + Flag: morsing
 + Difficulty: Smart-phone
 
 * * * 
 
-# Challenge 4.
-
-![Challenge 4 screen]({{ site-url }}/assets/infosec_ctf_ch04.jpg)
+### Challenge 4.
 
 Oh look, it's Cookie Monster from Sesame street, with his lil' pal
 whom I haven't seen before. This makes me suspect that this challenge
@@ -251,15 +246,13 @@ In the end, this is the original message.
 
 `infosec_flagis_welovecookies`
 
-### Conclusion, Challenge 4.
+#### Conclusion, Challenge 4.
 + Flag: welovecookies
 + Difficulty: 10/10, would scratch my head again.
 
 * * *
 
-# Challenge 5
-
-![Challenge 5 screen]({{ site-url }}/assets/infosec_ctf_ch05.jpg)
+### Challenge 5
 
 Upon entering this challenge, we are greeted by seemingly endless
 `alert`s, calling us hackers. When the alerts stop, we are greeted by
@@ -282,12 +275,14 @@ was aliens, it was (contrary to his previous statement), in fact aliens.
 
 I don't get it.
 
-### Conclusion, Challenge 5.
+#### Conclusion, Challenge 5.
 + Flag: `null`
 + Difficulty: Windows 8.1
 
 * * *
 
-I'll revisit the rest of the challenges another time. Thanks for reading
+I'll revisit the rest of the challenges another time.
+
+Thanks for reading!
 
 

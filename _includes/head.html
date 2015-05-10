@@ -1,41 +1,16 @@
+<!-- head _______________________________________________________________ -->
 <head>
-  <!-- Basic Page Needs
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <meta charset="utf-8">
+  <!-- meta ______________________ -->
+  <meta charset="utf8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <title>
-    {% if page.title == "Home" %}
-      {{ site.title }} &middot; {{ site.tagline }}
-    {% else %}
-      {{ page.title }} &middot; {{ site.title }}
-    {% endif %}
-  </title>
-  <meta name="description" content="{{ site.description }}">
-  <meta name="author" content="{{ site.author }}">
-
-  <!-- Mobile Specific Metas
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- FONT
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link href='//fonts.googleapis.com/css?family=Ubuntu:400,700' rel='stylesheet' type='text/css'>
-  
-
-  <!-- CSS
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link href="{{ site.baseurl }}public/css/normalize.css"  rel="stylesheet" type='text/css'>
-  <link href="{{ site.baseurl }}public/css/skeleton.css" rel="stylesheet" type='text/css'>
-  <link href="{{ site.baseurl }}public/css/birk.css" rel="stylesheet" type='text/css'>
-  <link href="{{ site.baseurl }}public/css/syntax.css" rel="stylesheet" type='text/css'>
-
-  <!-- Favicon
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="icon" type="image/png" href="{{ site.baseurl }}public/images/favicon.png" />
-
-  <!-- RSS
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="HandheldFriendly" content="True" />
+  <!-- SEO _______________________ -->
+  <meta name="description" content="{{ page.excerpt || post.excerpt || site.description }}" />
+  <!-- framework _________________ -->
+  <link href='{{ site.baseurl }}assets/css/normalize.css' rel='stylesheet' type='text/css'>
+  <link href='{{ site.baseurl }}assets/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+  <!-- customs ___________________ -->
+  <link href="{{ site.baseurl }}assets/css/custom.css" rel="stylesheet" type"text/css">
+  <title>{{ site.title }} - {{ site.tagline }}</title>
 </head>

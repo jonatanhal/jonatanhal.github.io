@@ -1,0 +1,31 @@
+/* 
+ * Custom CSS rules for birk 2.0
+ *
+ * Author:  @jonatanhal
+ *
+ */
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.post {
+    margin-top: 2em;
+    maring-bottom: 2em;
+}
+
+footer {
+    margin-top: 2em;
+    padding-top: 2em;
+    padding-bottom: 2em;
+    color: #eee;
+    background: #222;
+}
+
+footer hr {
+    border-color: #2d2d2d;
+}
+
+/* Ohai. */

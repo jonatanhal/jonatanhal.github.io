@@ -1,13 +1,11 @@
 ---
 layout: post
-title:  "Understanding & Saving Logs for Fun & Science"
+title:  "Trying to make some sense out of UFW logs"
 ---
 
-#How do i computer?
-The premise here is that you (the reader) know a little bit about what [UFW][ufw], [dmesg][wiki-dmesg] & related technologies do &/or are used for. This post is intended for folks who might wanna try and mine or understand some of their logs.
-Or just folks that might sit on data but not necessarily know what to do with it.
+**Authors note:** Looking back on this post, it's pretty crap; but seeing as I was just starting out with programming in python & stuff, I was eager to do something for my blog. I know it's crap & I may rewrite this post entirely sometime in the future.
 
-###Have you ever typed `dmesg` in your terminal of choice & scratched your head at what all these logs actually mean?  
+**Have you ever typed `dmesg` in your terminal of choice & scratched your head at what all these logs actually mean?**
 
 In my case, i had a similar train of thought when i installed [UFW][ufw] & made it my system firewall.
 I typed in dmesg, and saw walls of logging scrolling by, put there by UFW to let me know something about what it did.
@@ -15,17 +13,18 @@ Now before we try to understand the logs that [UFW][ufw] spits into the kernel r
 
 With that said, lets go.
 
-### But how do i get my very own logs? :(
-You can get your very own UFW-logs by changing the `LOGLEVEL`-setting in `/etc/ufw/ufw.conf` to `LOW`, or if you want more logs, crank up the loglevel to medium or high. Take a look in `man ufw` before, because apparently `MEDIUM` & `HIGH` produces a lot[^1] of logging.  
-At this point you can just run `dmesg -C -T | grep UFW >> /path/to/saved/log` & bob's your uncle!
+## Getting some UFW logs to play with
+In the case of UFW, you can get your very own logs by changing the `LOGLEVEL`-setting in `/etc/ufw/ufw.conf` to `LOW`, or if you want more logs, crank up the loglevel to medium or high. Take a look in `man ufw` before, because apparently `MEDIUM` & `HIGH` produces a lot of logging.  
+At this point you can just run `dmesg -C -T | grep UFW >> /path/to/saved/log` & bob's your uncle! The mac-address is also stored within the logs, but you can replace the macs from your logs by running `dmesg -T | sed 's/MAC\=\([0-9a-f]\+\|\:\)\+/MAC=\[REDACTED\]/'` & pipe that to whatever file you like.
 
-> ### WARNING
-> Note that `dmesg -C` will clear the ring-buffer on GNU/Linux operating-systems, meaning that you will no longer be able to access the previous messages.
-> `-C` is used here to be sure we don't get any duplicates in our logs.
+Note that `dmesg -C` will clear the ring-buffer on GNU/Linux operating-systems, meaning that you will no longer be able to access the previous messages.
+`-C` is used here to be sure we don't get any duplicates in our logs.
 
 If you don't have any UFW-logs to play with you can grab an example [here](https://github.com/jonatanhal/logparser/blob/master/example_log)
 
-##What's in a log and how do I know what it means?
+Alot of other programs available on unix produce logs & they can more often than not be found within the `/var/log/` directory.
+
+##Taking a closer look at UFW logs
 
 Knowing something about the data-set you are working with might help you formulate or overcome a problem, if you should change your schema to accommodate for other types & store some value in a Boolean instead of a string based on what you observed.  
 How you would get to know something about a different data-set would be beyond the scope of this post, but suffice to say that you would need the help of your search-engine of choice.
@@ -54,7 +53,7 @@ _Image courtesy of [frozentux][frozentux]_
 | `[$TIMESTAMP] [UFW BLOCK] `  | Date & action taken, in this case `BLOCK`                                                               |
 | `IN=wlp3s0`         | What interface received the packet                                                                               |
 | `OUT=`              | What interface was gonna pass on the packet, in this case `OUT=` is empty because we don't NAT on our interfaces |
-| `MAC=[REDACTED]`    | contains the MAC-address of the interface the packet was addressed for, _redacted[^2] because privacy_.          |
+| `MAC=[REDACTED]`    | contains the MAC-address of the interface the packet was addressed for.          |
 | `SRC=173.194.xxx.xxx` | the source IP-address for the packet													                         |
 | `DST=192.168.1.75`  | the destination IP-address for the packet												                         |
 | `LEN=40`            | the length of the packet																	                     |
@@ -71,9 +70,10 @@ _Image courtesy of [frozentux][frozentux]_
 | `URGP=0`            | Urgent pointer, _if the URG flag is set, then this 16-bit field is an offset from the sequence number indicating the last urgent data byte_[^3] |
 |==========+===================|
 
-> ##DISCLAIMER
->I have a _very basic_ understanding of the TCP-stack, so some of these things might seem obvious if you are familiar with the protocol.
->Some people say that the wisest people are those that admit that they know nothing. I must emphasize that i both know nothing & that I'm not wise to begin with.
+**DISCLAIMER**
+
+I have a _very basic_ understanding of the TCP-stack, so some of these things might seem obvious if you are familiar with the protocol.
+Some people say that the wisest people are those that admit that they know nothing. I must emphasize that i both know nothing & that I'm not wise to begin with.
   
 * * *
 
@@ -134,16 +134,8 @@ I might do another part to this post, where i try to do just that, but for now I
 
 Thanks for reading.
 
-Please [let me know][contact] if you find anything that's not right.
-
-* * *
-[^1]:"Loglevels  above medium generate a lot of logging output, and may quickly fill up your disk. Loglevel medium may generate a lot of logging output on  a  busy system." - [man ufw](http://manpages.ubuntu.com/manpages/precise/man8/ufw.8.html)
-[^2]:You can redact your own MAC from your logs by running `dmesg -T | sed 's/MAC\=\([0-9a-f]\+\|\:\)\+/MAC=\[REDACTED\]/'` & pipe that to whatever file you like.
-[^3]:copy & pasted from [wikipedia](https://en.wikipedia.org/wiki/Transmission_Control_Protocol#TCP_segment_structure)
-[^4]:[I wrote a program that does just that!][logparser]
+**Updated 2015-05-10: Reformatting & structural changes to the post.**
 
 [ufw]: https://launchpad.net/ufw "Uncomplicated firewall"
 [wiki-dmesg]: https://en.wikipedia.org/wiki/Dmesg "Display message"
-[contact]: https://twitter.com/jonatanhal "Help me out"
-[logparser]: https://github.com/jonatanhal/logparser "Fork!"
 [frozentux]: https://www.frozentux.net/iptables-tutorial/iptables-tutorial.html

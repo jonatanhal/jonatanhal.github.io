@@ -1,11 +1,8 @@
 ---
-layout: page
 title: Public Key
 permalink: /key/
 ---
-[Verified via twitter here](https://twitter.com/Jonatanhal/status/540288731174174720) (for what it's worth).
-
-~~~
+<pre>
 -----BEGIN PGP PUBLIC KEY BLOCK-----
 Version: GnuPG v2
 
@@ -58,4 +55,4 @@ RYXUWnE3xG5Itc+cZdh/VZET2fCKor3En+Sx8rUayeRZ/miiLdIzjXEdB+pbWA6e
 sJJ2LXFeEoJTmrAddRDkFoOEVfLO8A==
 =kEho
 -----END PGP PUBLIC KEY BLOCK-----
-~~~
+</pre>
