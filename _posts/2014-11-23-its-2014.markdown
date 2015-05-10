@@ -34,7 +34,7 @@ own `It's 2014!!`. Be creative!
 >
 >It's 2014! Why is _group of people **still** exploiting _another group of people_?.
 
-![Try googling]({{ site-url }}/assets/post_images/its_2014_why_are_still_screenshots_a_thing.png)
+![Try googling]({{ site-url }}/assets/post_images/its_2014_why_are_screenshots_still_a_thing.png)
 
 ### But, not really.
 What's fascinating to me is, why now? What is it about this period in time, with

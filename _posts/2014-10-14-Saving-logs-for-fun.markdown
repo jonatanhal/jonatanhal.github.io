@@ -22,7 +22,7 @@ Note that `dmesg -C` will clear the ring-buffer on GNU/Linux operating-systems, 
 
 If you don't have any UFW-logs to play with you can grab an example [here](https://github.com/jonatanhal/logparser/blob/master/example_log)
 
-Alot of other programs available on unix produce logs & they can more often than not be found within the `/var/log/` directory.
+A lot of other programs available on Unix produce logs & they can more often than not be found within the `/var/log/` directory.
 
 ##Taking a closer look at UFW logs
 
