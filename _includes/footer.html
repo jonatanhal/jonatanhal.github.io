@@ -43,7 +43,7 @@
       <div class="btn-group btn-group-justified" role="group" aria-label="Links to non-post pages">
 	{% for page in site.pages %}
 	{% if page.layout == "page" %}
-	<a type="btn" class="btn btn-info" href="{{ page.url }}">{{ page.title }}</a>
+	<a type="btn" class="btn" href="{{ page.url }}">{{ page.title }}</a>
 	{% endif %}
 	{% endfor %}
       </div>

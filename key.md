@@ -1,5 +1,6 @@
 ---
 title: Public Key
+layout: raw
 permalink: /key/
 ---
 <pre>
