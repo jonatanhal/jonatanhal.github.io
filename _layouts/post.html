@@ -1,15 +1,31 @@
----
-layout: default
----
-<div class="row post">
-  <header for="{{ page.title }}">
-    <h1 class="text-center"><a href="{{ page.url }}">{{ page.title }}</a></h1>
-    <time datetime="{{ page.date }}"><p class="lead text-center text-muted">{{ page.date | date_to_long_string }}</p></time>
-    <hr/>
-  </header>
-  <article>
-    {{ content }}
-  </article>
-  <hr />
-  <div class="clearfix"></div>
-</div>
+<!doctype html>
+<!-- 
+   - Birk
+   - hey, I just wanna let you know that @jonatanhal made this theme.
+   - Check it out you dingus! Or maybe you're just another hunk.
+   -
+   - It's free as in beer & liberty.
+   - github.com/jonatanhal/birk2
+   -
+   -->
+<html lang="en">
+  {% include head.html %}
+  <body id="page">
+    <div class="container">
+      <div class="row post">
+	<header for="{{ page.title }}">
+	  <h1 class="text-center"><a href="{{ page.url }}">{{ page.title }}</a></h1>
+	  <time datetime="{{ page.date }}"><p class="lead text-center text-muted">{{ page.date | date_to_long_string }}</p></time>
+	  <hr/>
+	</header>
+	<article>
+	  {{ content }}
+	</article>
+	<hr />
+	<p class="lead text-center">°°°</p>
+	<div class="clearfix"></div>
+      </div>
+    </div>
+    {% include footer.html %}
+  </body>
+</html>

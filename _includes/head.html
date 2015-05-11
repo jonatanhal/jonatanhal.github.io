@@ -6,10 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="HandheldFriendly" content="True" />
   <!-- SEO _______________________ -->
-  <meta name="description" content="{{ page.excerpt || post.excerpt || site.description }}" />
+  <meta name="description" content="{{ page.excerpt || post.excerpt || site.description | remove: '<p>' | remove: '</p>' }}" />
   <!-- framework _________________ -->
   <link href='{{ site.baseurl }}assets/css/normalize.css' rel='stylesheet' type='text/css'>
   <link href='{{ site.baseurl }}assets/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+  <link href="{{ site.baseurl }}assets/css/highlight.css" rel="stylesheet" type"text/css">
   <!-- customs ___________________ -->
   <link href="{{ site.baseurl }}assets/css/custom.css" rel="stylesheet" type"text/css">
   <title>{{ site.title }} - {{ site.tagline }}</title>
