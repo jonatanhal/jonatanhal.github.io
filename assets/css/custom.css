@@ -11,9 +11,9 @@ img {
     display: block;
 }
 
-.post {
-    margin-top: 2em;
-    maring-bottom: 2em;
+.post p {
+    font-family: Serif;
+    font-weight: 200;
 }
 
 footer {

@@ -41,6 +41,7 @@
       <h3>Pages</h3>
       <hr/>
       <div class="btn-group btn-group-justified" role="group" aria-label="Links to non-post pages">
+	<a type="btn" class="btn" href="{{ site.url }}">Home</a>
 	{% for page in site.pages %}
 	{% if page.layout == "page" %}
 	<a type="btn" class="btn" href="{{ page.url }}">{{ page.title }}</a>
