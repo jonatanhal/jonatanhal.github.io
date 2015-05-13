@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="HandheldFriendly" content="True" />
   <!-- SEO _______________________ -->
-  <meta name="description" content="{{ page.excerpt || post.excerpt || site.description | remove: '<p>' | remove: '</p>' }}" />
+  <meta name="description" content="{{ page.excerpt || post.excerpt || site.description | strip_html }}" />
   <!-- framework _________________ -->
   <link href='{{ site.baseurl }}assets/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
   <link href="{{ site.baseurl }}assets/css/highlight.css" rel="stylesheet" type"text/css">
