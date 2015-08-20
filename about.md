@@ -39,8 +39,7 @@ play games on either a PC or some console.
 #I am currently looking for work!!
 feel free to get in touch with me at
 `jonatanhaltorp [you can probably figure out what to put here]
-gmail.com`.  Use [my public key]({{ site-url}}/key), if that's your
-thing.
+gmail.com`.
 
 
 
