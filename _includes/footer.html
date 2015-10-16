@@ -1,53 +1,48 @@
-<div class="clearfix"></div>
-<footer> <!-- page footer __________ -->
+<footer>
   <div class="container">
-    <div class="media col-md-6">
-      <div class="media-body">
-	<h3 class="media-heading"><a href="{{ site.url }}">{{ site.title }}</a></h3>
-	<hr>
-	<dl>
-	  {% if site.twitter || site.github || site.email %}
-	  <dt>Contact</dt>
-	  {% if site.twitter %}
-	  <dd><a href="https://twitter.com/{{ site.twitter }}">Twitter</a></dd>
-	  {% endif %}
-	  {% if site.github %}
-	  <dd><a href="https://github.com/{{ site.github }}">Github</a></dd>
-	  {% endif %}
-	  {% if site.email %}
-	  <dd>{{ site.email }}</dd>
-	  {% endif %}
-	  <hr/>
-	  {% endif %}
-	  <dt>About</dt>
-	  <dd class="text-muted">
-	    {{ site.description }}
-	  </dd>
-	</dl>
-      </div>
-    </div>
-    <div class="col-md-6">
-      <h3 class="media-heading">LATEST POSTS</h3>
-      <hr>
-      {% for post in site.posts limit:5 %}
-      <strong><a href="{{ post.url }}">{{ post.title | upcase }}</a></strong>
-      <hr/>
-      <div class="clearfix"></div>
-      {% endfor %}
-    </div>
-    <hr/>
-    <div class="clearfix"></div>
     <div class="row">
-      <h3>Pages</h3>
-      <hr/>
-      <div class="btn-group btn-group-justified" role="group" aria-label="Links to non-post pages">
-	<a type="btn" class="btn" href="{{ site.url }}">Home</a>
-	{% for page in site.pages %}
-	{% if page.layout == "page" %}
-	<a type="btn" class="btn" href="{{ page.url }}">{{ page.title }}</a>
+
+      <dl class="dl-horizontal">
+	<dt class="page-header">
+	  Contact
+	</dt><dd></dd>
+
+	{% if site.email %}
+	<dt>
+	  Email
+	</dt>
+        <dd>
+	  <a href="mailto:{{ site.email }}">{{ site.email }}</a>
+	</dd>
 	{% endif %}
-	{% endfor %}
-      </div>
+	
+	{% if site.keybase_username %}
+	<dt>
+	  Keybase
+	</dt>
+	<dd>
+          <a href="https://github.com/{{ site.github_username }}">{{ site.github_username }}</a>
+        </dd>	
+	{% endif %}
+
+        {% if site.github_username %}
+	<dt>
+	  Github
+	</dt>
+        <dd>
+          <a href="https://github.com/{{ site.github_username }}">{{ site.github_username }}</a>
+        </dd>
+	{% endif %}
+
+        {% if site.twitter_username %}
+	<dt>
+	  Twitter
+	</dt>
+        <dd>
+          <a href="https://twitter.com/{{ site.twitter_username }}">{{ site.twitter_username }}</a>
+        </dd>
+        {% endif %}
+      </dl>
     </div>
   </div>
 </footer>

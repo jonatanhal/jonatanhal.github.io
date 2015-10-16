@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!-- 
+                                ___           ___              
+     _____        ___          /  /\         /__/|             
+    /  /::\      /  /\        /  /::\       |  |:|             
+   /  /:/\:\    /  /:/       /  /:/\:\      |  |:|             
+  /  /:/~/::\  /__/::\      /  /:/~/:/    __|  |:|             
+ /__/:/ /:/\:| \__\/\:\__  /__/:/ /:/___ /__/\_|:|____         
+ \  \:\/:/~/:/    \  \:\/\ \  \:\/:::::/ \  \:\/:::::/         
+  \  \::/ /:/      \__\::/  \  \::/~~~~   \  \::/~~~~          
+   \  \:\/:/       /__/:/    \  \:\        \  \:\              
+    \  \::/        \__\/      \  \:\        \  \:\             
+     \__\/                     \__\/         \__\/             
+
+BIRK 3.0 BY JONATANHAL
+https://github.com/jonatanhal/birk
+-->
+<html>
+
+  {% include head.html %}
+
+  <body>
+    <div class="sidebar">
+      <span class="label">◧</span>
+      <h1 id="top"><a href="{{ site.baseurl }}/">{{ site.title }}</a></h1>
+      <hr>
+      <h3>Pages</h3>
+      <ul class="list-unstyled">
+	{% for page in site.pages %}
+	{% if page.layout == "page" %}
+	<li>
+	  <a class="lead" href="{{ page.url }}">{{ page.title }}</a>
+	</li>
+	{% endif %}
+	{% endfor %}
+      </ul>
+      <hr>
+      {% if site.description %}
+      <p>{{ site.description }}</p>
+      {% endif %}
+
+
+    </div>
+    <div style="margin-bottom: 2%;" class="container">
+      {{ content }}
+    </div>
+
+    <div style="margin-bottom: 0%;" class="well">
+      {% include footer.html %}
+    </div>
+  </body>
+
+</html>

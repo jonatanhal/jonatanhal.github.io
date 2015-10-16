@@ -3,13 +3,14 @@ title:			Jonatanhal
 tagline:		'$PUNCHLINE'
 
 description: 		"Ramblings from a wannabe developer / hacker, I post sporadically so don't expect a flood of posts. I've been doing semi-technical stuff with computers for around 2 years now."
-baseurl:   	        /
+baseurl:   	        ""
 
-url: 			"https://jonatanhal.github.io" # the base hostname & protocol for your site
+url: 			"http://jonatanh.al"
 
 author:             	Jonatanhal
-twitter: 		jonatanhal
-github: 		jonatanhal
+twitter_username:	jonatanhal
+github_username:	jonatanhal
+keybase_username:	jonatanhal
 email: 			'jonatanhaltorp@spamtrapgmail.com (remove spamtrap)'
 
 # Build settings
@@ -17,6 +18,5 @@ markdown:		kramdown
 highlighter: 		pygments
 permalinks:  		pretty
 relative_permalinks:	true
-paginate:		5
 
 

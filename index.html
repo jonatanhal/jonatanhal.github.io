@@ -1,40 +1,17 @@
 ---
-layout: post-index
-title: Latest Posts
+layout: default
 ---
-{% for post in paginator.posts %}
-<div class="row post">
-  <header for="{{ post.title }}">
-    <h1 class="text-center"><a href="{{ post.url }}">{{ post.title | upcase }}</a></h1>
-    <time datetime="{{ post.date }}"><p class="lead text-center text-muted">{{ post.date | date_to_long_string }}</p></time>
-    <hr/>
-  </header>
-  <article>
-    {{ post.content }}
-  </article>
-  <hr />
-  <p class="lead text-center">°°°</p>
-  <div class="clearfix"></div>
-</div>
-{% endfor %}
+
+<h1 class="page-header pull-left">Posts</h1>
 <div class="clearfix"></div>
-<div class="row">
-  <div class="pull-left">
-    {% if paginator.next_page %}
-    <a class="btn btn-default" href="{{ site.baseurl }}page{{paginator.next_page}}">Older</a>
-    {% else %}
-    <button class="btn btn-default">Older</button>
-    {% endif %}
-  </div>
-  <div class="pull-right">
-    {% if paginator.previous_page %}
-    {% if paginator.page == 2 %}
-    <a class="btn btn-default" href="{{ site.baseurl }}">Newer</a>
-    {% else %}
-    <a class="btn btn-default" href="{{ site.baseurl }}page{{paginator.previous_page}}">Newer</a>
-    {% endif %}
-    {% else %}
-    <button class="btn btn-default">Newer</button>
-    {% endif %}
-  </div>
-</div>
+<dl class="dl-horizontal">
+  {% for post in site.posts %}
+  <dt>{{ post.date | date: "%d-%m-%Y" }}</dt>
+  <dd>
+    <strong>
+    <a href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+    </strong>
+  </dd>
+  {% endfor %}
+</dl>
+</ul>
