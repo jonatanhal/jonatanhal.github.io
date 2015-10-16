@@ -1,8 +1,29 @@
-hr.thick {
-    border-width: 12px 0 0;
-    border-style: solid none none;
-    border-color: #fff;
+/* @media queries shamelessly stolen from https://stackoverflow.com/questions/13550541/media-min-width-max-width */
+@media only screen and (max-device-width:480px){    
+    /* styles for mobile browsers smaller than 480px; (iPhone) */
+    article {
+	padding-left: 5%;
+	padding-right: 5%;
+    }
+
+    img {
+	max-width: 100%;
+    }
 }
+
+@media only screen and (device-width:768px){
+    /* default iPad screens */
+    article {
+	padding-left: 5%;
+	padding-right: 5%;
+    }
+
+    img {
+	max-width: 100%;
+    }
+
+}
+
 .sidebar {
     border: 1px solid #090909;
     top: -20px;
