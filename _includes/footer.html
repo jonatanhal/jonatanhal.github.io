@@ -1,48 +1,38 @@
-<footer>
-  <div class="container">
-    <div class="row">
+<footer class="site-footer">
 
-      <dl class="dl-horizontal">
-	<dt class="page-header">
-	  Contact
-	</dt><dd></dd>
+  <div class="wrapper">
 
-	{% if site.email %}
-	<dt>
-	  Email
-	</dt>
-        <dd>
-	  <a href="mailto:{{ site.email }}">{{ site.email }}</a>
-	</dd>
-	{% endif %}
-	
-	{% if site.keybase_username %}
-	<dt>
-	  Keybase
-	</dt>
-	<dd>
-          <a href="https://keybase.io/{{ site.keybase_username }}">{{ site.github_username }}</a>
-        </dd>	
-	{% endif %}
+    <h2 class="footer-heading">{{ site.title }}</h2>
 
-        {% if site.github_username %}
-	<dt>
-	  Github
-	</dt>
-        <dd>
-          <a href="https://github.com/{{ site.github_username }}">{{ site.github_username }}</a>
-        </dd>
-	{% endif %}
+    <div class="footer-col-wrapper">
+      <div class="footer-col footer-col-1">
+        <ul class="contact-list">
+          <li>{{ site.title }}</li>
+          <li><a href="mailto:{{ site.email }}">{{ site.email }}</a></li>
+        </ul>
+      </div>
 
-        {% if site.twitter_username %}
-	<dt>
-	  Twitter
-	</dt>
-        <dd>
-          <a href="https://twitter.com/{{ site.twitter_username }}">{{ site.twitter_username }}</a>
-        </dd>
-        {% endif %}
-      </dl>
+      <div class="footer-col footer-col-2">
+        <ul class="social-media-list">
+          {% if site.github_username %}
+          <li>
+            {% include icon-github.html username=site.github_username %}
+          </li>
+          {% endif %}
+
+          {% if site.twitter_username %}
+          <li>
+            {% include icon-twitter.html username=site.twitter_username %}
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+
+      <div class="footer-col footer-col-3">
+        <p>{{ site.description }}</p>
+      </div>
     </div>
+
   </div>
+
 </footer>

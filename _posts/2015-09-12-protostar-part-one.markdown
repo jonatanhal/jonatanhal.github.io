@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Protostar Part One"
+title:  "Protostar Exploit Exercises: Stacks Part One"
 ---
 
 **Hello!** - I'm pretty new to hacking, and so far I've solved
