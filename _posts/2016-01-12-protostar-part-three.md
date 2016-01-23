@@ -51,8 +51,13 @@ that jumps to a location?
 
 ![Return deeper]({{ site-url }}/assets/post_images/protostar_part3_go_deeper.png)
 
+All we need to do is find a instruction *somewhere* in memory that 
+holds a `ret` instruction. And that's the easy part.
+
+After figuring out how much to overwrite, we put two and two together in `payload.py`
+
 {% highlight python %}
-# shellcode.py
+# payload.py
 from struct import pack
 
 ret    = pack('L', 0x08048508)
