@@ -74,7 +74,7 @@ print(payload)
 
 `python shellcode.py > shellcode`
 
-All we need to do is find a instruction *somewhere* in memory that 
+All we need to do is find a location *somewhere* in memory that 
 holds a `ret` instruction. 
 
 So when the `ret` in `getpath` executes, 4 bytes are popped of the stack
@@ -127,8 +127,6 @@ char *getpath()
 }
 {% endhighlight %}
 
-Let's have a look in gdb.
-
 strdup returns the address of the allocated string in the eax register.
 
 We can get around the return-address check if we jump to the buffer
@@ -137,13 +135,10 @@ to set a breakpoint at the `ret` instruction in getpath, took note of the
 following states:
 
 + The returned address from strdup stored in eax
-  In my case this was 0x804a008
 
-+ The value of esp
-  In my case this was 0xbffff7bc
++ The value of esp before the `ret` instruction executed.
 
 + The address of the buffer
-  In my case this was 0xbffff76c
 
 {% highlight python %}
 from struct import pack
