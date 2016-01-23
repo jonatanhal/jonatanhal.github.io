@@ -79,9 +79,6 @@ print(payload)
 
 `python shellcode.py > shellcode`
 
-All we need to do is find a location *somewhere* in memory that 
-holds a `ret` instruction. 
-
 So when the `ret` in `getpath` executes, 4 bytes are popped of the stack
 into eip & provided that eip is now pointing at another `ret` instruction,
 another 4 bytes are popped of the stack & into eip. Right?
