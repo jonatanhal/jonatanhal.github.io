@@ -37,11 +37,10 @@ void getpath()
 {% endhighlight %}
 
 In [my previous post]({% post_url 2016-01-11-protostar-part-two %}), I
-used a  return address which  pointed to  somewhere on the  stack (the
-stack  in  linux  is  usually  located  around  0xbffff000).  In  this
-challenge, that's  no longer  possible since  the function  checks the
-return address  & quits if the  address we've provided is  pointing to
-somewhere on the stack.
+used a return address which pointed to somewhere on the stack.  In
+this challenge, that's no longer possible since the function checks
+the return address & quits if the address we've provided is pointing
+to somewhere on the stack.
 
 ## ROP-solution: Return oriented halting
 
