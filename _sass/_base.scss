@@ -90,6 +90,15 @@ li {
 
 /***
  * CUSTOM
+ * DATE: 2016-02-14
+ * GOAL: Make hr include som fucking padding, Jesus Christ.
+ */
+hr {
+	margin: 1em 0;
+}
+
+/***
+ * CUSTOM
  * DATE: 2016-01-10
  * GOAL: Show unordered lists with a empty circle instead of a filled circle.
  */
@@ -149,10 +158,10 @@ blockquote {
  */
 pre,
 code {
-    font-size: 15px;
-    border: 1px solid $grey-color-light;
-    border-radius: 3px;
-    background-color: #eef;
+    font-size: 14px;
+    /*border: 1px solid $grey-color-light;
+    border-radius: 3px;*/
+    background-color: #eee;
 }
 
 code {
