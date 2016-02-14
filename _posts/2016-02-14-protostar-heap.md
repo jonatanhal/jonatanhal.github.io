@@ -215,7 +215,7 @@ surrender.
   shamelessly admit that I read about the solution of this problem
   [here](http://www.kroosec.com/2013/01/protostar-heap3.html)*
  
-  * I stole his eloquent shellcode (`push targetAddress; ret`),
+  * I stole Hanis eloquent shellcode (`push targetAddress; ret`),
   and modified his exploit a tiny bit.
 
 The vulnerability shown in the article by MaXX is fixed in glibc, but
