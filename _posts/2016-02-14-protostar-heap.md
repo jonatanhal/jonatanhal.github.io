@@ -173,7 +173,7 @@ I'm still trying to wrap my head around heap-exploits though.
 
 ## [heap2](https://exploit-exercises.com/protostar/heap2)
 
->###About
+>### About
 >
 >This level examines what can happen when heap pointers are stale.
 >
@@ -199,7 +199,7 @@ to NULL leads to stuff like this.
 
 ## [heap3](https://exploit-exercises.com/protostar/heap3)
 
->###About
+>### About
 >
 >This level introduces the Doug Lea Malloc (dlmalloc) and how
 >heap meta data can be modified to change program execution.
