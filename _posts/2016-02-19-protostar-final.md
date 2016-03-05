@@ -45,7 +45,7 @@ Starting program: /home/user/a.out < final0input
 ...
 (gdb) c
 
-Program recieved signal SIGSEGV, Segmentation fault.
+Program received signal SIGSEGV, Segmentation fault.
 0xdeadbeef in ?? ()
 ~~~
 
@@ -73,7 +73,7 @@ valid path.
 'df df 83 98'
 {% endhighlight %}
 
-To get the original ascii back, we just xor the value again with 0xf0f0f0f0.
+To get the original ASCII back, we just xor the value again with 0xf0f0f0f0.
 
 #### Aiming for the stars, landing on the moon.
 
@@ -139,6 +139,8 @@ $ python final0_solution.py
 $ grep root /tmp/shadow 
 root:$6$gOA4/iAf$EMw.4yshZLZxjlf./VmnEVQ20QsEmdzZa73csPGYGG6KC.riaGhLmESwWwB7Rnntu5JCDnRnOUTeeYWQk.iUq0:15302:0:99999:
 ~~~
+
+![Success]({{ site-url }}/assets/post_images/protostar_final0_success.gif)
 
 * * * 
 
@@ -211,7 +213,7 @@ For example, `(gdb) file /opt/protostar/bin/final1`.
 
 #### Sharing is caring
 
-In the mysterious case of final1, where the initial crash occured in the
+In the mysterious case of final1, where the initial crash occurred in the
 shared library function printf, or `__IO_vfprintf_interal` specifically; 
 If we're working with a core-file and want to take a look at code from
 a shared library; entering the `sharedlibrary` command makes sure that 
@@ -330,12 +332,14 @@ $ cat /tmp/lol
 Success!
 ~~~
 
+![Success]({{ site-url }}/assets/post_images/protostar_final1_success.gif)
+
 * * * 
 
 ## [final2](https://exploit-exercises.com/protostar/final2/)
 
 > ### About
-> 
+ > 
 > Remote heap level :)
 
 I would prefer a more explicit explanation. Having wrestled with this
@@ -347,14 +351,16 @@ binary found within the system.
 The print-statement in the `check_path` function never echoes back either;
 so something is probably wrong.
 
-So, having absolutely no shame in my body, I looked at the author of
-secwriteups solution to the
-problem. [Link to solution](http://secwriteups.blogspot.se/2015/02/protostar-final-2.html)
+I looked at the author of secwriteups solution to the problem when I
+got stuck on this level, I was having some trouble with getting the program
+to crash & secwriteups-post helped me a lot in progressing. 
+[Link Secwriteups post](http://secwriteups.blogspot.se/2015/02/protostar-final-2.html)
 
 The beginning goal is obviously to make it crash during the call to
 free, which we did the previous time we were exploiting dl-malloc.
 
-From there, we can probably poke around enough to make sense of it all.
+From there, we can probably poke around enough to make sense of it all
+enough to be able to exploit things.
 
 {% highlight python %}
 import socket
@@ -446,17 +452,17 @@ s.sendall(payload)
 s.close()
 {% endhighlight %}
 
+![Success]({{ site-url }}/assets/post_images/protostar_final2_success.gif)
+
 * * *
 
 We've been through thick and thin, cried some, failed until hell froze
 over, laughed a whole lot and maybe even learned a thing or two, but
 we are officially done with the protostar challenges. FeelsGreatMan
 
-![Success]({{ site-url }}/assets/post_images/protostar_final2_success.gif)
-
 It's been a lot of fun trying to get my shellcode working and trying
 to exploit these sets of challenges. I've already started working on
-the [fusion]() set of challenges, so keep an eye on my blog for
+the [fusion](https://exploit-exercises.com/fusion/) set of challenges, so keep an eye on my blog for
 solutions to those problems.
 
 In the mean-while, have a good one & thanks for reading.

@@ -37,7 +37,7 @@ PORT=2999
 s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((HOST, PORT))
 
-# recieve 128 bytes
+# receive 128 bytes
 output=s.recv(128)
 # parse said bytes to only include the number to send.
 start=output.find("'")
@@ -58,9 +58,9 @@ Thank you sir/madam
 
 >## About
 >
->This level tests the ability to convert binary integers into ascii representation.
+>This level tests the ability to convert binary integers into ASCII representation.
 
-In the previous challenge, we converted a ascii integer into a binary
+In the previous challenge, we converted a ASCII integer into a binary
 representation. This time, we do the opposite.
 
 {% highlight python %}
@@ -107,7 +107,7 @@ PORT=2997
 s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect((HOST, PORT))
 
-# Recieve & convert 4 bytes at a time.
+# Receive & convert 4 bytes at a time.
 a=int(struct.unpack('I', s.recv(4))[0])
 b=int(struct.unpack('I', s.recv(4))[0])
 c=int(struct.unpack('I', s.recv(4))[0])
