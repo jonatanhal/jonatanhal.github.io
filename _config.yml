@@ -15,7 +15,7 @@ email: 			'jonatanhaltorp@spamtrapgmail.com (remove spamtrap)'
 
 # Build settings
 markdown:		kramdown
-highlighter: 		pygments
+highlighter: 		rouge
 permalinks:  		pretty
 relative_permalinks:	false
 
