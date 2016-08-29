@@ -1,17 +1,11 @@
 # Site settings
-title:			Jonatanhal
-tagline:		'$PUNCHLINE'
+title:			\x00\x00\x00\x00
+tagline:		'[REDACTED]'
 
-description: 		"Ramblings from a wannabe developer / hacker, I try to write whenever I can."
+description: 		"Rumours of my SIGSEGV were greatly exaggerated"
 baseurl:   	        ""
 
 url: 			"http://jonatanh.al"
-
-
-twitter_username:	jonatanhal
-github_username:	jonatanhal
-
-email: 			'jonatanhaltorp@spamtrapgmail.com (remove spamtrap)'
 
 # Build settings
 markdown:		kramdown
