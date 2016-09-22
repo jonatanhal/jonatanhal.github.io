@@ -1,5 +1,5 @@
 # Site settings
-title:			\x00\x00\x00\x00
+title:			'Jonatan Haltorp Blog'
 tagline:		'[REDACTED]'
 
 description: 		"Rumours of my SIGSEGV were greatly exaggerated"
