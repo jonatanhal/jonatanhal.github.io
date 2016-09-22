@@ -3,13 +3,16 @@ layout: default
 ---
 <article style="margin: 0 3%;" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <header>
-    <h1 itemprop="name headline">{{ page.title }}</h1>
-    <p class="text-muted lead"><time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%Y-%m-%d" }}</time>{% if page.author %} • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ page.author }}</span></span>{% endif %}</p>
-  </header>
-
-  <div itemprop="articleBody">
-    {{ content }}
+  <div>
+    <header style="padding: 20% 10%">
+      <h1 itemprop="name headline">{{ page.title }}</h1>
+      <p class="text-muted"><time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%Y-%m-%d" }}</time>{% if page.author %} • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ page.author }}</span></span>{% endif %}</p>
+    </header>
+  </div>
+  <div class="row">
+    <div itemprop="articleBody">
+      {{ content }}
+    </div>
   </div>
 
 </article>

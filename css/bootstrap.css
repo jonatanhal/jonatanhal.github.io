@@ -5,8 +5,8 @@
  */
 
 /*!
- * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=c59baca6e8e24d53325cd56220fd76be)
- * Config saved to config.json and https://gist.github.com/c59baca6e8e24d53325cd56220fd76be
+ * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=e142cfba872f1300cb97b1c5677f9c6e)
+ * Config saved to config.json and https://gist.github.com/e142cfba872f1300cb97b1c5677f9c6e
  */
 /*!
  * Bootstrap v3.3.7 (http://getbootstrap.com)
@@ -1571,7 +1571,7 @@ pre {
   word-break: break-all;
   word-wrap: break-word;
   color: #333333;
-  background-color: #d2d2d2;
+  background-color: #efefef;
   border: 1px solid #cccccc;
   border-radius: 4px;
 }
@@ -1605,7 +1605,7 @@ pre code {
 }
 @media (min-width: 1200px) {
   .container {
-    width: 1170px;
+    width: 55em;
   }
 }
 .container-fluid {
