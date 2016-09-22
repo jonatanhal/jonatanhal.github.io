@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Contact
-permalink: /about/
+permalink: /contact/
 ---
 
 <p class="lead">Hey, you can reach me through the following means:</p>
