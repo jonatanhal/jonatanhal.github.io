@@ -39,7 +39,7 @@ overwritten return-address is never used.
 Parts of the code are testing if the connection being made to the
 http-server knows about a secret password that's being generated once
 the daemon is started. The password does not change between
-connections, So we dont have to have god-luck when trying to guess it.
+connections, So we don't have to have god-luck when trying to guess it.
 
 Having a look at the code, we contemplate over the following section
 
@@ -69,7 +69,7 @@ function would wait 37500 microseconds before continuing execution.
 Due to network noise, we can't simply subtract 2500 micro-seconds from
 a timestamp collected when issuing a request with 1 possibly correct
 character and call it a day, as the computers, switches and everything
-inbetween may add random delays here and there. But we can possibly
+in-between may add random delays here and there. But we can possibly
 make educated guesses if we backed them up with some basic statistics.
 
 ### Timing-Attack Hello World!
@@ -96,7 +96,7 @@ Whatever, let's look at some code from main.
 
 {% highlight go %}
 keyspace = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
-password = []rune("!!!!!!!!!!!!!!!!") // 16 garantueed wrong bytes
+password = []rune("!!!!!!!!!!!!!!!!") // 16 guaranteed wrong bytes
 
 for y := 0; y < len(password); y++ {
 	fmt.Fprintf(os.Stderr, "========== Index %04d/%04d ==========\n", y, len(password));
@@ -144,7 +144,7 @@ func sendRequest(candidate []rune) (delta time.Duration)  {
 	// timer, and "stop" the timer when we get back a response.
 	// But first, let's sleep for a while, just so that things
 	// settle down.
-	time.Sleep(500*time.Microsecond) // adjust if you're impacient
+	time.Sleep(500*time.Microsecond) // adjust if you're impatient
 	fmt.Fprint(conn, body[:blen-2])
 	pre := time.Now()
 	fmt.Fprint(conn, body[blen-1])
@@ -153,9 +153,7 @@ func sendRequest(candidate []rune) (delta time.Duration)  {
 }
 {% endhighlight %}
 
-*note: It takes around 70 minutes to go through each index*
-
-And things continue to be quite basic in the sendRequest function,
+Things continue to be quite basic in the sendRequest function,
 just note that we are sleeping for a short while after establishing
 the connection to our target.
 
@@ -166,7 +164,7 @@ connection.
 Now that we have the capability of collecting data, we should make
 sure that we're collecting a decent amount, I went with 101 iterations
 of the snippet from the main-function above. Fortunately, through the
-magic of television - I have prepared some data for us to analyse, a
+magic of television - I have prepared some data for us to analyze, a
 taste of which is listed below.
 
 ~~~
@@ -180,7 +178,7 @@ taste of which is listed below.
 40649135,a,0
 ~~~
 
-Using gnuplot (along with my [plotting script]()), I was able to
+Using gnuplot (along with my [plotting script](https://github.com/jonatanhal/fusion_exploits/blob/master/level04/plotting_timings.gnuplot)), I was able to
 generate a graph.
 
 ![graph of index_0]({{ site-url }}/assets/post_images/fusion_level04_graph_index00.png)
@@ -201,7 +199,7 @@ $1 = 0xb938e008 "i[REDACTED]"
 It turns out we are in fact not on the right path, in this case - the
 correct byte was `i`.
 
-# Something Something Automatization.
+# Something Something Automation.
 
 Using our eyes to look at each individual graph would work. Work as
 in, we would get the correct password from looking at the graphs - but
@@ -246,7 +244,7 @@ if the credentials we submit are bigger than `sizeof(details)`, as
 long as the submission actually contains the correct password.
 
 Using the small wrapper program which handles things like base64
-encoding, I was able to atleast produce a error-message :)
+encoding, I was able to at least produce a error-message :)
 
 ~~~
 $ python2 -c "print 'A'*2048" | ./level04_exploit $PASSWORD | nc 192.168.14.33 20004
@@ -294,10 +292,10 @@ bf988000-bf9a9000 rw-p 00000000 00:00 0          [stack]
 ~~~
 
 So... The backtrace sure is helpful, I - as a exploit developer
-appriciate that :D
+appreciate that :D
 
 And ASLR is only so effective when your program uses fork, as the
-addresseses are inherited from the process parent to the child.
+addresses are inherited from the process parent to the child.
 
 ~~~
  $ # Case in point
@@ -308,7 +306,7 @@ addresseses are inherited from the process parent to the child.
 ~~~
 
 Same thing with SSP, the cookie itself is stored in thread-specific
-memory - but is not rerandomized in any child-process (atleast in this
+memory - but is not re-randomized in any child-process (at least in this
 case where fork is being used to create each child process), I could
 be (and hope I am) wrong in other cases :D
 
@@ -417,7 +415,7 @@ want to use in our exploit, and the address that's being leaked.
 
 After some experimenting, it turns out that I can return consistently
 to system - but my pointer to the command I want to run is getting
-shuffled around the stack for some wierd reason - my idea was to base
+shuffled around the stack for some weird reason - my idea was to base
 the address of the stack leaked in previous steps - adjust that
 address by a known offset (for example, by observing that my buffer is
 located `0xfefe` bytes after the leaked pointer - I could make
@@ -547,7 +545,7 @@ inspect some char stars located on the stack.
 
 So, where the hell on the stack am I?
 
-After looking at some disassemblies of the `process` function, which
+After looking at some disassembly of the `process` function, which
 handles our input - One could come to the conclusion that it is a call
 to `fprintf`, which allows us to trigger a formatting vulnerability.
 But before `fprintf` is called, the inputs are collected in a heap-allocated
