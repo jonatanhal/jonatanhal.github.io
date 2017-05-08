@@ -8,4 +8,4 @@ permalink: /contact/
 
 * Twitter: [Jonatanhal](https://twitter.com/jonatanhal)
 
-* Email ([private](http://pgp.mit.edu/pks/lookup?op=get&search=0x84BD91630842E36E)/[work](http://pgp.mit.edu/pks/lookup?op=get&search=0xE090D4BF75D24FFB))
+* Email: [private](http://pgp.mit.edu/pks/lookup?op=get&search=0x84BD91630842E36E)
